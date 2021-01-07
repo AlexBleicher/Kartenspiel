@@ -7,9 +7,13 @@ public class Set {
 
     private List<Card> cards = new ArrayList<>();
 
+    public List<Card> getCards() {
+        return cards;
+    }
+
     public void generateCards() {
         for (int i = 0; i < CardColor.values().length; i++) {
-            for (int j = 1; j <= 13; j++) {
+            for (int j = 1; j <= 14; j++) {
                 cards.add(new Card(CardColor.values()[i], j));
             }
         }
