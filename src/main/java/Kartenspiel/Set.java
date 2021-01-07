@@ -6,6 +6,11 @@ import java.util.List;
 public class Set {
 
     private List<Card> cards = new ArrayList<>();
+    private Game game;
+
+    public Set(Game theGame){
+        game=theGame;
+    }
 
     public List<Card> getCards() {
         return cards;
@@ -32,6 +37,16 @@ public class Set {
             Card card2 = cards.get(index2);
             cards.set(index1, card2);
             cards.set(index2, card1);
+        }
+    }
+
+    public void giveCards(int amountOfPlayers){
+        for(int i=0; i<13; i++){
+            for(int j=0; j<amountOfPlayers; j++){
+                Card card=cards.get(0);
+                cards.remove(0);
+                game.getPlayerList().get(j).draw(card);
+            }
         }
     }
 }
