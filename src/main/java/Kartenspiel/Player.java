@@ -8,6 +8,10 @@ public class Player {
     private List<Card> hand = new ArrayList<>();
     private int pointsTotal;
 
+    public List<Card> getHand() {
+        return hand;
+    }
+
     public void draw(Card newCard){
         hand.add(newCard);
     }

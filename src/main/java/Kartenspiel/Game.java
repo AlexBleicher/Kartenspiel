@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Game {
 
-    private List<Player> playerList = new ArrayList<>();
+    public List<Player> playerList = new ArrayList<>();
     private Set set = new Set(this);
     private DiscardPile discardPile = new DiscardPile();
 
@@ -24,6 +24,7 @@ public class Game {
     public void startRound() {
         set.generateCards();
         set.mix();
+        generatePlayers();
         set.giveCards(playerList.size());
 
 

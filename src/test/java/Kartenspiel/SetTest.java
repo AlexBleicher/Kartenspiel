@@ -10,7 +10,7 @@ class SetTest {
 
     @Test
     void testGenerate(){
-        Set startSet=new Set();
+        Set startSet=new Set(new Game());
 
         startSet.generateCards();
 
@@ -18,9 +18,9 @@ class SetTest {
     }
     @Test
     void testMix(){
-        Set startSet=new Set();
+        Set startSet=new Set(new Game());
 
-        Set compareSet=new Set();
+        Set compareSet=new Set(new Game());
 
         startSet.generateCards();
         compareSet.generateCards();
