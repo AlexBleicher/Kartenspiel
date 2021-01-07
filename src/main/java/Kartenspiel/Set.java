@@ -8,8 +8,8 @@ public class Set {
     private List<Card> cards = new ArrayList<>();
     private Game game;
 
-    public Set(Game theGame){
-        game=theGame;
+    public Set(Game theGame) {
+        game = theGame;
     }
 
     public List<Card> getCards() {
@@ -40,10 +40,10 @@ public class Set {
         }
     }
 
-    public void giveCards(int amountOfPlayers){
-        for(int i=0; i<13; i++){
-            for(int j=0; j<amountOfPlayers; j++){
-                Card card=cards.get(0);
+    public void giveCards(int amountOfPlayers) {
+        for (int i = 0; i < 13; i++) {
+            for (int j = 0; j < amountOfPlayers; j++) {
+                Card card = cards.get(0);
                 cards.remove(0);
                 game.getPlayerList().get(j).draw(card);
             }
