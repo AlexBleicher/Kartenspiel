@@ -11,7 +11,12 @@ public class Player {
     public List<Card> getHand() {
         return hand;
     }
+    public void showHand(){
+        for(Card card : hand){
+            System.out.println(card.getfullName());
+        }
 
+    }
     public void draw(Card newCard){
         hand.add(newCard);
     }

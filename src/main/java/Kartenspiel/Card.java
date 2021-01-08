@@ -4,10 +4,12 @@ public class Card {
 
     public CardColor color;
     public int points;
+    public Name name;
 
-    public Card(CardColor givenColor, int givenPoints) {
+    public Card(CardColor givenColor, int index) {
         color = givenColor;
-        points = givenPoints;
+        name = Name.values()[index];
+        points = Integer.parseInt(name.getValue());
     }
 
     public CardColor getColor() {
@@ -18,20 +20,11 @@ public class Card {
         return points;
     }
 
-    public String getName() {
-        String name;
-        if (points <= 10) {
-            String pointsAsString = Integer.toString(points);
-            name = pointsAsString + color.toString();
-        } else if (points == 11) {
-            name = "Jack" + color.toString();
-        } else if (points == 12) {
-            name = "Lady" + color.toString();
-        } else if (points == 13) {
-            name = "King" + color.toString();
-        } else {
-            name = "Ace" + color.toString();
-        }
+    public Name getName() {
         return name;
+    }
+
+    public String getfullName() {
+        return color + " " + name;
     }
 }

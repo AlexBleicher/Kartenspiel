@@ -16,4 +16,12 @@ class GameTest {
         assertThat(game.playerList.get(3).getHand().size()).isEqualTo(13);
     }
 
+    @Test
+    void testGenerateCards(){
+        Game game=new Game();
+        game.generateCards();
+
+        assertThat(game.getSet().size()).isEqualTo(4*14);
+    }
+
 }
