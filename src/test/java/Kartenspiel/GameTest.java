@@ -11,9 +11,10 @@ class GameTest {
     void testStart() {
         Game game = new Game();
 
-        game.startRound();
+        game.startGame();
 
-        assertThat(game.playerList.get(3).getHand().size()).isEqualTo(13);
+        //assertThat(game.playerList.get(3).getHand().size()).isEqualTo(13);
+        assertThat(game.getDiscardPile().size()).isEqualTo(1);
     }
 
     @Test

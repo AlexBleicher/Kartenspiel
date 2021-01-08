@@ -20,14 +20,34 @@ public class Game {
         return discardPile;
     }
 
-    public void startRound() {
+    public void startGame() {
         generateCards();
         generateCards();
         Collections.shuffle(set);
-        generatePlayers();
         hand_out();
-        playerList.get(0).showHand();
+        //playerList.get(0).showHand();
+        turn_first_Card();
+    }
 
+    public void playGame(Player starter) {
+        boolean gameOver = false;
+        Player currentPlayer = starter;
+        while (!gameOver) {
+            if (currentPlayer.getHand().size() == 0) {
+                gameOver = true;
+            } else {
+                draw_a_Card(currentPlayer);
+                discard_a_Card(currentPlayer);
+            }
+        }
+    }
+
+    public void playRound() {
+        generatePlayers();
+        for (int i = 0; i < playerList.size(); i++) {
+            startGame();
+            playGame(playerList.get(i));
+        }
     }
 
     public void generatePlayers() { //Nur vorübergehend, um Start der Runde zu simulieren
@@ -58,5 +78,23 @@ public class Game {
                 player.draw(currentCard);
             }
         }
+    }
+
+    public void turn_first_Card() {
+        Card firstCard = set.getFirst();
+        set.removeFirst();
+        discardPile.add(firstCard);
+    }
+
+    public void draw_a_Card(Player player) {
+        Card currentCard = set.getFirst();
+        set.removeFirst();
+        player.draw(currentCard);
+    }
+
+    public void discard_a_Card(Player player) {
+        Card chosenCard = player.getHand().get(0);
+        player.discard(chosenCard);
+        discardPile.add(chosenCard);
     }
 }
