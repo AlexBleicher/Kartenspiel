@@ -38,6 +38,7 @@ public class Game {
             } else {
                 draw_a_Card(currentPlayer);
                 discard_a_Card(currentPlayer);
+                currentPlayer=playerList.get(playerList.indexOf(currentPlayer)+1);
             }
         }
     }
