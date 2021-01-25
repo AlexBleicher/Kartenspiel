@@ -58,29 +58,33 @@ public class Player {
     }
 
     public List<List<Card>> getAllPairs() {
-        List<List<Card>> allPossiblePairs=new ArrayList<>();
+        List<List<Card>> allPossiblePairs = new ArrayList<>();
 
         //Trenne Hand nach Zahlen
-        Map<Name, List<Card>> allNamesOfCards= hand.stream()
+        Map<Name, List<Card>> allNamesOfCards = hand.stream()
                 .collect(Collectors.groupingBy(card -> card.getName()));
         //Für alle Zahlen mögliche Paare finden (selbe Zahl unterschiedliche Farbe)
-        for(Map.Entry<Name,List<Card>> cardNameListEntry : allNamesOfCards.entrySet()){
-            List<Card> currentList=cardNameListEntry.getValue();
-            currentList.sort(Comparator.comparing(card->card.getColor()));
+        for (Map.Entry<Name, List<Card>> cardNameListEntry : allNamesOfCards.entrySet()) {
+            List<Card> currentList = cardNameListEntry.getValue();
+            currentList.sort(Comparator.comparing(card -> card.getColor()));
             //Liste ist jetzt nach Farben sortiert
             //Doppelte Karten nicht zählen und entfernen
-            Map<CardColor, List<Card>> allColorsinList= currentList.stream()
-                    .collect(Collectors.groupingBy(card->card.getColor()));
-            long countOfPair= allColorsinList.entrySet().stream().count();
-            if(countOfPair>=3){
+
+            for (int i = 0; i < currentList.size(); i++) {
+                Card currentCard = currentList.get(i);
+
+                for (int j = i + 1; i < currentList.size(); j++) {
+                    if (currentCard.equalsStructural(currentList.get(i))) {
+                        currentList.remove(currentCard);
+                    }
+                }
+            }
+
+            if (currentList.size() >= 3) {
                 allPossiblePairs.add(currentList);
             }
         }
-        for(List<Card> pair:allPossiblePairs){
-            for(Card card: pair){
-                System.out.println(card.getfullName());
-            }
-        }
+
         return allPossiblePairs;
     }
 
