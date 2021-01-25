@@ -65,7 +65,9 @@ public class Player {
         return new ArrayList<>();
     }
 
-    public void getAllRows() { //Sobald 3 oder Mehr Karten der Gleichen Farbe aufeinander folgen.
+    public List<List<Card>> getAllRows() { //Sobald 3 oder Mehr Karten der Gleichen Farbe aufeinander folgen.
+        List<List<Card>> allPossibleRows = new ArrayList<>();
+
         //Trenne Hand nach Farben
         Map<CardColor, List<Card>> allColorsWithCards = hand.stream()
                 .collect(Collectors.groupingBy(card -> card.getColor()));
@@ -76,24 +78,25 @@ public class Player {
             List<Card> currentList = cardColorListEntry.getValue();
             currentList.sort(Comparator.comparing(card1 -> card1.getName()));
             //Liste ist Sortiert -> Straßen finden
-            List<Card> currentRow=new ArrayList<>();
-            for(int i=0; i<currentList.size()-1;i++){
-                Card currentCard=currentList.get(i);
-                Card nextCard=currentList.get(i+1);
+            List<Card> currentRow = new ArrayList<>();
+            for (int i = 0; i < currentList.size() - 1; i++) {
+                Card currentCard = currentList.get(i);
+                Card nextCard = currentList.get(i + 1);
                 currentRow.add(currentCard);
-                if(nextCard.getName().ordinal()==currentCard.getName().ordinal()+1 && !currentRow.contains(nextCard)){
-                    currentRow.add(nextCard);
-                    System.out.println(currentRow.size());
+                if (nextCard.getName().ordinal() != currentCard.getName().ordinal() + 1) {
+                    currentRow = new ArrayList<>();
+                } else {
+                    if (currentRow.size() >= 3) {
+                        allPossibleRows.add(currentRow);
+                    }
                 }
-                else{
-                    currentRow=new ArrayList<>();
-                }
-                System.out.println(currentCard.getfullName());
+
             }
+
         }
 
 
-
+        return allPossibleRows;
     }
 }
 
