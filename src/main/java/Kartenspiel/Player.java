@@ -1,5 +1,6 @@
 package Kartenspiel;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -52,7 +53,7 @@ public class Player {
         int currentPoints = 0;
         int maxPossiblePoints = 0;
         List<List<Card>> allPossiblePairs = getAllPairs();
-        List<List<Card>> allPossibleRows = getAllRows();
+        //List<List<Card>> allPossibleRows = getAllRows();
     }
 
     public List<List<Card>> getAllPairs() {
@@ -61,9 +62,10 @@ public class Player {
         for (int i = 0; i < hand.size(); i++) {
 
         }
+        return new ArrayList<>();
     }
 
-    public List<List<Card>> getAllRows() { //Sobald 3 oder Mehr Karten der Gleichen Farbe aufeinander folgen.
+    public void getAllRows() { //Sobald 3 oder Mehr Karten der Gleichen Farbe aufeinander folgen.
         //Trenne Hand nach Farben
         Map<CardColor, List<Card>> allColorsWithCards = hand.stream()
                 .collect(Collectors.groupingBy(card -> card.getColor()));
@@ -74,10 +76,24 @@ public class Player {
             List<Card> currentList = cardColorListEntry.getValue();
             currentList.sort(Comparator.comparing(card1 -> card1.getName()));
             //Liste ist Sortiert -> Straßen finden
-
+            List<Card> currentRow=new ArrayList<>();
+            for(int i=0; i<currentList.size()-1;i++){
+                Card currentCard=currentList.get(i);
+                Card nextCard=currentList.get(i+1);
+                currentRow.add(currentCard);
+                if(nextCard.getName().ordinal()==currentCard.getName().ordinal()+1 && !currentRow.contains(nextCard)){
+                    currentRow.add(nextCard);
+                    System.out.println(currentRow.size());
+                }
+                else{
+                    currentRow=new ArrayList<>();
+                }
+                System.out.println(currentCard.getfullName());
+            }
         }
+
 
 
     }
 }
-}
+

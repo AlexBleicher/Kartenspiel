@@ -6,7 +6,7 @@ public enum Name {
     private String value;
 
     public String getValue() {
-        Enum
+
         return this.value;
     }
 
