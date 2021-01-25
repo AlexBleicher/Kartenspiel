@@ -53,16 +53,35 @@ public class Player {
         int currentPoints = 0;
         int maxPossiblePoints = 0;
         List<List<Card>> allPossiblePairs = getAllPairs();
-        //List<List<Card>> allPossibleRows = getAllRows();
+        List<List<Card>> allPossibleRows = getAllRows();
+
     }
 
     public List<List<Card>> getAllPairs() {
+        List<List<Card>> allPossiblePairs=new ArrayList<>();
 
-        Map<Name, Set<Card>> allPossibleNames = new HashMap<>();
-        for (int i = 0; i < hand.size(); i++) {
-
+        //Trenne Hand nach Zahlen
+        Map<Name, List<Card>> allNamesOfCards= hand.stream()
+                .collect(Collectors.groupingBy(card -> card.getName()));
+        //Für alle Zahlen mögliche Paare finden (selbe Zahl unterschiedliche Farbe)
+        for(Map.Entry<Name,List<Card>> cardNameListEntry : allNamesOfCards.entrySet()){
+            List<Card> currentList=cardNameListEntry.getValue();
+            currentList.sort(Comparator.comparing(card->card.getColor()));
+            //Liste ist jetzt nach Farben sortiert
+            //Doppelte Karten nicht zählen und entfernen
+            Map<CardColor, List<Card>> allColorsinList= currentList.stream()
+                    .collect(Collectors.groupingBy(card->card.getColor()));
+            long countOfPair= allColorsinList.entrySet().stream().count();
+            if(countOfPair>=3){
+                allPossiblePairs.add(currentList);
+            }
         }
-        return new ArrayList<>();
+        for(List<Card> pair:allPossiblePairs){
+            for(Card card: pair){
+                System.out.println(card.getfullName());
+            }
+        }
+        return allPossiblePairs;
     }
 
     public List<List<Card>> getAllRows() { //Sobald 3 oder Mehr Karten der Gleichen Farbe aufeinander folgen.
@@ -74,7 +93,6 @@ public class Player {
 
         //Für alle Farben alle möglichen Straßen finden
         for (Map.Entry<CardColor, List<Card>> cardColorListEntry : allColorsWithCards.entrySet()) {
-            CardColor currentColor = cardColorListEntry.getKey();
             List<Card> currentList = cardColorListEntry.getValue();
             currentList.sort(Comparator.comparing(card1 -> card1.getName()));
             //Liste ist Sortiert -> Straßen finden
@@ -90,12 +108,8 @@ public class Player {
                         allPossibleRows.add(currentRow);
                     }
                 }
-
             }
-
         }
-
-
         return allPossibleRows;
     }
 }

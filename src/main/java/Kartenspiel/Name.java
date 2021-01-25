@@ -9,7 +9,6 @@ public enum Name {
 
         return this.value;
     }
-
     private Name(String value) {
         this.value = value;
     }
