@@ -52,12 +52,52 @@ public class Player {
     public void organizeHand() {
         int currentPoints = 0;
         int maxPossiblePoints = 0;
-        List<List<Card>> allPossiblePairs = getAllPairs();
+        List<Card> allDuplicates= getAllDuplicates();
+        List<List<Card>> allPossiblePairs = getAllPairs(allDuplicates);
         List<List<Card>> allPossibleRows = getAllRows();
 
+        //Finde die höchstmögliche Punktzahl der aktuellen Hand
+        Map<List<Card> , Integer > pointMapPair = new HashMap<>();
+        Map<List<Card> , Integer > pointMapRow = new HashMap<>();
+
+        for(List<Card> pair: allPossiblePairs){
+            for(Card card:pair){
+                System.out.println(card.getfullName());
+            }
+            pointMapPair.put(pair, calculatePoints(pair));
+        }
+        for(List<Card> row: allPossibleRows){
+            for(Card card:row){
+                System.out.println(card.getfullName());
+            }
+            pointMapRow.put(row, calculatePoints(row));
+        }
+
+        System.out.println(pointMapPair.entrySet());
+        System.out.println(pointMapRow.entrySet());
     }
 
-    public List<List<Card>> getAllPairs() {
+    public List<Card> getAllDuplicates(){
+        List<Card> allDuplicates=new ArrayList<>();
+        for(int i=0;i<hand.size();i++){
+            Card currentCard=hand.get(i);
+            for(int j=i+1;j<hand.size();j++){
+                Card comparedCard=hand.get(j);
+                if(currentCard.equalsStructural(comparedCard)){
+                    allDuplicates.add(currentCard);
+                }
+            }
+        }
+        return allDuplicates;
+    }
+    public Integer calculatePoints(List<Card> cards){
+        Integer totalPoints=0;
+        for(Card card:cards){
+            totalPoints+=card.getPoints();
+        }
+        return totalPoints;
+    }
+    public List<List<Card>> getAllPairs(List<Card> allDuplicates) {
         List<List<Card>> allPossiblePairs = new ArrayList<>();
 
         //Trenne Hand nach Zahlen
@@ -68,23 +108,13 @@ public class Player {
             List<Card> currentList = cardNameListEntry.getValue();
             currentList.sort(Comparator.comparing(card -> card.getColor()));
             //Liste ist jetzt nach Farben sortiert
-            //Doppelte Karten nicht zählen und entfernen
-
-            for (int i = 0; i < currentList.size(); i++) {
-                Card currentCard = currentList.get(i);
-
-                for (int j = i + 1; i < currentList.size(); j++) {
-                    if (currentCard.equalsStructural(currentList.get(i))) {
-                        currentList.remove(currentCard);
-                    }
-                }
-            }
+            //Duplikate rauswerfen
+            currentList.removeIf(allDuplicates::contains);
 
             if (currentList.size() >= 3) {
                 allPossiblePairs.add(currentList);
             }
         }
-
         return allPossiblePairs;
     }
 
@@ -117,4 +147,3 @@ public class Player {
         return allPossibleRows;
     }
 }
-

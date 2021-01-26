@@ -48,9 +48,62 @@ class PlayerTest {
         testPlayer.draw(card8);
         testPlayer.draw(card9);
         testPlayer.draw(card10);
-        List<List<Card>> allPairs= testPlayer.getAllPairs();
+        List<Card> allDuplicates= testPlayer.getAllDuplicates();
+        List<List<Card>> allPairs= testPlayer.getAllPairs(allDuplicates);
 
         assertThat(allPairs.size()).isEqualTo(2);
     }
 
+    @Test
+    void testOrganize(){
+        Player testPlayer=new Player();
+        Card card1=new Card(CardColor.HEART,1);
+        Card card2=new Card(CardColor.HEART, 1);
+        Card card3=new Card(CardColor.SPADES, 1);
+        Card card4=new Card(CardColor.CHECK,1);
+
+        Card card5=new Card(CardColor.CHECK, 3);
+        Card card6=new Card(CardColor.CROSS, 3);
+
+        Card card7=new Card(CardColor.HEART, 5);
+        Card card8=new Card(CardColor.SPADES, 5);
+        Card card9=new Card(CardColor.CHECK, 5);
+        Card card10=new Card(CardColor.CROSS, 5);
+
+        Card card11=new Card(CardColor.HEART, 6);
+        Card card12=new Card(CardColor.HEART, 7);
+        Card card13=new Card(CardColor.HEART, 8);
+
+        testPlayer.draw(card1);
+        testPlayer.draw(card2);
+        testPlayer.draw(card3);
+        testPlayer.draw(card4);
+        testPlayer.draw(card5);
+        testPlayer.draw(card6);
+        testPlayer.draw(card7);
+        testPlayer.draw(card8);
+        testPlayer.draw(card9);
+        testPlayer.draw(card10);
+        testPlayer.draw(card11);
+        testPlayer.draw(card12);
+        testPlayer.draw(card13);
+
+        testPlayer.organizeHand();
+
+        assertThat(true).isTrue();
+    }
+    @Test
+    public void testDuplicateFinder(){
+        Player testPlayer=new Player();
+        Card card1=new Card(CardColor.HEART,1);
+        Card card2=new Card(CardColor.HEART, 1);
+        Card card3=new Card(CardColor.SPADES, 1);
+        Card card4=new Card(CardColor.CHECK,1);
+        testPlayer.draw(card1);
+        testPlayer.draw(card2);
+        testPlayer.draw(card3);
+        testPlayer.draw(card4);
+        List<Card> allDuplicates=testPlayer.getAllDuplicates();
+        assertThat(allDuplicates.size()).isEqualTo(1);
+    }
 }
