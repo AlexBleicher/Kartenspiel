@@ -5,6 +5,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+
 public class Player {
 
     private List<Card> hand = new ArrayList<>();
@@ -104,8 +105,9 @@ public class Player {
             }
         }
         return maxPossiblePoints;
+        //Hand danach sortieren
     }
-
+    //Rekursiver Ansatz: Nimm ein mögliches Paar/eine mögliche Reihe zur Seite, schau dir den Rest an
     public boolean isPossible(List<Card> cardList1, List<Card> cardList2, List<Card> duplicateCards) {
         boolean cardCombiPossible = true;
         for (Card card : cardList1) {

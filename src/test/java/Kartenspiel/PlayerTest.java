@@ -58,7 +58,7 @@ class PlayerTest {
     @Test
     void testOrganize(){
         Player testPlayer=new Player();
-        Card card1=new Card(CardColor.HEART,1);
+        /*Card card1=new Card(CardColor.HEART,1);
         Card card2=new Card(CardColor.HEART, 1);
         Card card3=new Card(CardColor.SPADES, 1);
         Card card4=new Card(CardColor.CHECK,1);
@@ -89,8 +89,26 @@ class PlayerTest {
         testPlayer.draw(card11);
         testPlayer.draw(card12);
         testPlayer.draw(card13);
-        testPlayer.draw(card14);
-        assertThat(testPlayer.organizeHand()).isEqualTo(54);
+        testPlayer.draw(card14);*/
+
+        Card card1=new Card(CardColor.HEART, 1);
+        Card card2=new Card(CardColor.HEART, 2);
+        Card card3=new Card(CardColor.HEART, 3);
+        Card card5=new Card(CardColor.HEART, 1);
+        Card card6=new Card(CardColor.HEART, 2);
+        Card card7=new Card(CardColor.HEART, 3);
+        Card card8=new Card(CardColor.SPADES, 3);
+        Card card9=new Card(CardColor.CHECK, 3);
+
+        testPlayer.draw(card1);
+        testPlayer.draw(card2);
+        testPlayer.draw(card3);
+        testPlayer.draw(card5);
+        testPlayer.draw(card6);
+        testPlayer.draw(card7);
+        testPlayer.draw(card8);
+        testPlayer.draw(card9);
+        assertThat(testPlayer.organizeHand()).isEqualTo(21);
     }
     @Test
     public void testDuplicateFinder(){
