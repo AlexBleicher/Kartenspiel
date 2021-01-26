@@ -49,54 +49,97 @@ public class Player {
         hand.remove(chosenCard);
     }
 
-    public void organizeHand() {
+    public int organizeHand() {
         int currentPoints = 0;
         int maxPossiblePoints = 0;
-        List<Card> allDuplicates= getAllDuplicates();
+        List<Card> allDuplicates = getAllDuplicates();
         List<List<Card>> allPossiblePairs = getAllPairs(allDuplicates);
         List<List<Card>> allPossibleRows = getAllRows();
 
         //Finde die höchstmögliche Punktzahl der aktuellen Hand
-        Map<List<Card> , Integer > pointMapPair = new HashMap<>();
-        Map<List<Card> , Integer > pointMapRow = new HashMap<>();
+        Map<List<Card>, Integer> pointMapPair = new HashMap<>();
+        Map<List<Card>, Integer> pointMapRow = new HashMap<>();
 
-        for(List<Card> pair: allPossiblePairs){
-            for(Card card:pair){
-                System.out.println(card.getfullName());
-            }
+        for (List<Card> pair : allPossiblePairs) {
             pointMapPair.put(pair, calculatePoints(pair));
         }
-        for(List<Card> row: allPossibleRows){
-            for(Card card:row){
-                System.out.println(card.getfullName());
-            }
+        for (List<Card> row : allPossibleRows) {
             pointMapRow.put(row, calculatePoints(row));
         }
 
-        System.out.println(pointMapPair.entrySet());
-        System.out.println(pointMapRow.entrySet());
+        for (Map.Entry<List<Card>, Integer> pair : pointMapPair.entrySet()) {
+            currentPoints = pair.getValue();
+            //Alle Paare abgleichen
+            for (Map.Entry<List<Card>, Integer> otherPair : pointMapPair.entrySet()) {
+                if (!pair.equals(otherPair) && isPossible(pair.getKey(), otherPair.getKey(), allDuplicates)) {
+                    currentPoints += otherPair.getValue();
+                }
+            }
+            //Alle Reihen abgleichen
+            for (Map.Entry<List<Card>, Integer> otherRow : pointMapRow.entrySet()) {
+                if (isPossible(pair.getKey(), otherRow.getKey(), allDuplicates)) {
+                    currentPoints += otherRow.getValue();
+                }
+            }
+            //Höchsten Wert ermitteln
+            if (currentPoints >= maxPossiblePoints) {
+                maxPossiblePoints = currentPoints;
+            }
+        }
+        for (Map.Entry<List<Card>, Integer> row :pointMapRow.entrySet()){
+            currentPoints=row.getValue();
+
+            for (Map.Entry<List<Card>, Integer> otherRow : pointMapRow.entrySet()) {
+                if (!row.equals(otherRow) && isPossible(row.getKey(), otherRow.getKey(), allDuplicates)) {
+                    currentPoints += otherRow.getValue();
+                }
+            }
+            for (Map.Entry<List<Card>, Integer> otherPair : pointMapPair.entrySet()) {
+                if (isPossible(row.getKey(), otherPair.getKey(), allDuplicates)) {
+                    currentPoints += otherPair.getValue();
+                }
+            }
+            if (currentPoints >= maxPossiblePoints) {
+                maxPossiblePoints = currentPoints;
+            }
+        }
+        return maxPossiblePoints;
     }
 
-    public List<Card> getAllDuplicates(){
-        List<Card> allDuplicates=new ArrayList<>();
-        for(int i=0;i<hand.size();i++){
-            Card currentCard=hand.get(i);
-            for(int j=i+1;j<hand.size();j++){
-                Card comparedCard=hand.get(j);
-                if(currentCard.equalsStructural(comparedCard)){
+    public boolean isPossible(List<Card> cardList1, List<Card> cardList2, List<Card> duplicateCards) {
+        boolean cardCombiPossible = true;
+        for (Card card : cardList1) {
+            for (Card compareCard : cardList2) {
+                if (card.equalsStructural(compareCard) && !(duplicateCards.contains(card) || duplicateCards.contains(compareCard))) {
+                    cardCombiPossible = false;
+                }
+            }
+        }
+        return cardCombiPossible;
+    }
+
+    public List<Card> getAllDuplicates() {
+        List<Card> allDuplicates = new ArrayList<>();
+        for (int i = 0; i < hand.size(); i++) {
+            Card currentCard = hand.get(i);
+            for (int j = i + 1; j < hand.size(); j++) {
+                Card comparedCard = hand.get(j);
+                if (currentCard.equalsStructural(comparedCard)) {
                     allDuplicates.add(currentCard);
                 }
             }
         }
         return allDuplicates;
     }
-    public Integer calculatePoints(List<Card> cards){
-        Integer totalPoints=0;
-        for(Card card:cards){
-            totalPoints+=card.getPoints();
+
+    public Integer calculatePoints(List<Card> cards) {
+        Integer totalPoints = 0;
+        for (Card card : cards) {
+            totalPoints += card.getPoints();
         }
         return totalPoints;
     }
+
     public List<List<Card>> getAllPairs(List<Card> allDuplicates) {
         List<List<Card>> allPossiblePairs = new ArrayList<>();
 
@@ -130,10 +173,15 @@ public class Player {
             List<Card> currentList = cardColorListEntry.getValue();
             currentList.sort(Comparator.comparing(card1 -> card1.getName()));
             //Liste ist Sortiert -> Straßen finden
+
             List<Card> currentRow = new ArrayList<>();
             for (int i = 0; i < currentList.size() - 1; i++) {
                 Card currentCard = currentList.get(i);
+
                 Card nextCard = currentList.get(i + 1);
+                if (nextCard.equalsStructural(currentCard) && i < currentList.size() - 2) {
+                    nextCard = currentList.get(i + 2);
+                }
                 currentRow.add(currentCard);
                 if (nextCard.getName().ordinal() != currentCard.getName().ordinal() + 1) {
                     currentRow = new ArrayList<>();
@@ -142,6 +190,7 @@ public class Player {
                         allPossibleRows.add(currentRow);
                     }
                 }
+
             }
         }
         return allPossibleRows;
