@@ -41,6 +41,9 @@ public class Game {
                 currentPlayer=playerList.get(playerList.indexOf(currentPlayer)+1);
             }
         }
+        for(int i=0; i<playerList.size();i++){
+            playerList.get(i).setPointsTotal(playerList.get(i).getPointsHand());
+        }
     }
 
     public void playRound() {
@@ -94,7 +97,7 @@ public class Game {
     }
 
     public void discard_a_Card(Player player) {
-        Card chosenCard = player.getHand().get(0);
+        Card chosenCard = player.chooseCard("Discard",0);
         player.discard(chosenCard);
         discardPile.add(chosenCard);
     }

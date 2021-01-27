@@ -12,6 +12,7 @@ public class Player {
     private int pointsHand;
     private boolean isOut;
     private int pointsTotal;
+    private List<List<Card>> cardsChosen=new ArrayList<>();
 
     public int getPointsHand() {
         return pointsHand;
@@ -50,7 +51,45 @@ public class Player {
         hand.remove(chosenCard);
     }
 
-    public int organizeHand() {
+    public void setPointsTotal(int amountOfPoints){
+        pointsTotal+=amountOfPoints;
+    }
+
+    public void comeOut(List<List<Card>> cardsUsedToComeOut){
+
+    }
+
+    public Card chooseCard(String action, int index){
+        if(action.equals("Discard")){
+            return hand.get(index);
+        }
+        else if(action.equals("Select Pair")){
+            choosePair(hand.get(index));
+        }
+        return new Card(CardColor.HEART,0);
+    }
+
+    public List<Card> choosePair(Card addedCard){
+        for(List<Card> searchPair: cardsChosen){
+            if(isPair(searchPair)){
+                searchPair.add(addedCard);
+                return searchPair;
+            }
+        }
+        return new ArrayList<>();
+    }
+
+    public boolean isPair(List<Card> checkedCards){
+        boolean isPair=false;
+        if(checkedCards.size()==1){
+            isPair=true;
+        }
+        else if(checkedCards.get(0).getColor()!=checkedCards.get(1).getColor()){
+            isPair=true;
+        }
+        return isPair;
+    }
+    /*public int organizeHand() {
         int currentPoints = 0;
         int maxPossiblePoints = 0;
         List<Card> allDuplicates = getAllDuplicates();
@@ -196,5 +235,5 @@ public class Player {
             }
         }
         return allPossibleRows;
-    }
+    }*/
 }

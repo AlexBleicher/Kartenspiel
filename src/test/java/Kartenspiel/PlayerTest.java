@@ -2,6 +2,7 @@ package Kartenspiel;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -11,6 +12,37 @@ import static org.junit.jupiter.api.Assertions.*;
 class PlayerTest {
 
     @Test
+    public void testIsPair(){
+        Player testPlayer=new Player();
+        Card card1=new Card(CardColor.HEART,1);
+        Card card2=new Card(CardColor.SPADES,1);
+        Card card3=new Card(CardColor.CROSS,1);
+        Card card4=new Card(CardColor.HEART,2);
+        Card card5=new Card(CardColor.HEART,2);
+        Card card6=new Card(CardColor.CHECK,3);
+        Card card7=new Card(CardColor.CHECK,4);
+        Card card8=new Card(CardColor.CHECK,5);
+        List<Card> listCardsPair=new ArrayList<>();
+        listCardsPair.add(card1);
+        listCardsPair.add(card2);
+        listCardsPair.add(card3);
+
+        List<Card>listCardDuplicate=new ArrayList<>();
+        listCardDuplicate.add(card4);
+        listCardDuplicate.add(card5);
+
+        List<Card>listCardRow=new ArrayList<>();
+        listCardRow.add(card6);
+        listCardRow.add(card7);
+        listCardRow.add(card8);
+
+        boolean isPair=testPlayer.isPair(listCardsPair);
+        boolean isNoPair=testPlayer.isPair(listCardRow);
+        //assertThat(isPair).isTrue();
+        assertThat(isNoPair).isFalse();
+
+    }
+   /* @Test
     public void testRowfinder(){
 
         Player testPlayer=new Player();
@@ -58,7 +90,7 @@ class PlayerTest {
     @Test
     void testOrganize(){
         Player testPlayer=new Player();
-        /*Card card1=new Card(CardColor.HEART,1);
+        Card card1=new Card(CardColor.HEART,1);
         Card card2=new Card(CardColor.HEART, 1);
         Card card3=new Card(CardColor.SPADES, 1);
         Card card4=new Card(CardColor.CHECK,1);
@@ -89,7 +121,7 @@ class PlayerTest {
         testPlayer.draw(card11);
         testPlayer.draw(card12);
         testPlayer.draw(card13);
-        testPlayer.draw(card14);*/
+        testPlayer.draw(card14);
 
         Card card1=new Card(CardColor.HEART, 1);
         Card card2=new Card(CardColor.HEART, 2);
@@ -164,5 +196,5 @@ class PlayerTest {
         boolean isPossible= testPlayer.isPossible(allRows.get(0), allPairs.get(1),allDuplicates);
         boolean isPossible2=testPlayer.isPossible(allRows.get(0), allPairs.get(0), allDuplicates);
         assertThat(isPossible).isFalse();
-    }
+    }*/
 }
