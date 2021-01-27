@@ -47,6 +47,10 @@ public class Player {
         return pointsTotal;
     }
 
+    public List<List<Card>> getCardsChosen(){
+        return cardsChosen;
+    }
+
     public void discard(Card chosenCard) {
         hand.remove(chosenCard);
     }
@@ -64,30 +68,73 @@ public class Player {
             return hand.get(index);
         }
         else if(action.equals("Select Pair")){
-            choosePair(hand.get(index));
+            addToPair(hand.get(index));
+
+        }
+        else if(action.equals("Select Row")){
+            addToRow(hand.get(index));
         }
         return new Card(CardColor.HEART,0);
     }
 
-    public List<Card> choosePair(Card addedCard){
+    public void addToPair(Card addedCard){
+        boolean added=false;
         for(List<Card> searchPair: cardsChosen){
             if(isPair(searchPair)){
-                searchPair.add(addedCard);
-                return searchPair;
+                if(fitsPair(addedCard,searchPair)) {
+                    searchPair.add(addedCard);
+                    added=true;
+                    break;
+                }
             }
         }
-        return new ArrayList<>();
+        if (!added) {
+            List<Card> newPair=new ArrayList<>();
+            newPair.add(addedCard);
+            cardsChosen.add(newPair);
+        }
     }
 
     public boolean isPair(List<Card> checkedCards){
         boolean isPair=false;
-        if(checkedCards.size()==1){
+        if(checkedCards.size()==1||checkedCards.size()==0){
             isPair=true;
         }
         else if(checkedCards.get(0).getColor()!=checkedCards.get(1).getColor()){
             isPair=true;
         }
         return isPair;
+    }
+    public boolean fitsPair(Card cardtoProve, List<Card> pairToCheck){
+        boolean fitsPair=true;
+        if(cardtoProve.getName()!=pairToCheck.get(0).getName()){
+            fitsPair=false;
+        }
+        for(Card card: pairToCheck){
+            if (card.equalsStructural(cardtoProve)) {
+                fitsPair=false;
+            }
+        }
+        return fitsPair;
+    }
+
+    public void addToRow(Card addedCard){
+        boolean added=false;
+        for(List<Card> row: cardsChosen){
+            if(isRow(row)){
+
+            }
+        }
+    }
+    public boolean isRow(List<Card> rowToCheck){
+        boolean isRow=false;
+        if(rowToCheck.size()==1){
+            isRow=true;
+        }
+        else if(rowToCheck.get(0).getName()!=rowToCheck.get(1).getName()){
+            isRow=true;
+        }
+        return isRow;
     }
     /*public int organizeHand() {
         int currentPoints = 0;

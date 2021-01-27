@@ -36,8 +36,8 @@ public class Game {
             if (currentPlayer.getHand().size() == 0) {
                 gameOver = true;
             } else {
-                draw_a_Card(currentPlayer);
-                discard_a_Card(currentPlayer);
+                drawACard(currentPlayer);
+                discardACard(currentPlayer);
                 currentPlayer=playerList.get(playerList.indexOf(currentPlayer)+1);
             }
         }
@@ -47,7 +47,7 @@ public class Game {
     }
 
     public void playRound() {
-        generatePlayers();
+
         for (int i = 0; i < playerList.size(); i++) {
             startGame();
             playGame(playerList.get(i));
@@ -90,13 +90,13 @@ public class Game {
         discardPile.add(firstCard);
     }
 
-    public void draw_a_Card(Player player) {
+    public void drawACard(Player player) {
         Card currentCard = set.getFirst();
         set.removeFirst();
         player.draw(currentCard);
     }
 
-    public void discard_a_Card(Player player) {
+    public void discardACard(Player player) {
         Card chosenCard = player.chooseCard("Discard",0);
         player.discard(chosenCard);
         discardPile.add(chosenCard);

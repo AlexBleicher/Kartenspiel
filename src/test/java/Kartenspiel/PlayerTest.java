@@ -42,6 +42,29 @@ class PlayerTest {
         assertThat(isNoPair).isFalse();
 
     }
+    @Test
+    void testAddToPair(){
+        Player testPlayer=new Player();
+        Card card1=new Card(CardColor.HEART,1);
+        Card card2=new Card(CardColor.CHECK,2);
+        Card card3=new Card(CardColor.SPADES,2);
+        Card card4=new Card(CardColor.CROSS,2);
+        Card card5=new Card(CardColor.CHECK, 1);
+        Card card6=new Card(CardColor.CROSS,1);
+        testPlayer.addToPair(card1);
+        testPlayer.addToPair(card2);
+        testPlayer.addToPair(card3);
+        testPlayer.addToPair(card4);
+        testPlayer.addToPair(card5);
+        testPlayer.addToPair(card6);
+        for(List<Card>pairs:testPlayer.getCardsChosen()) {
+            for (Card card : pairs) {
+                System.out.println(card.getfullName());
+            }
+        }
+        assertThat(testPlayer.getCardsChosen().size()).isEqualTo(2);
+
+    }
    /* @Test
     public void testRowfinder(){
 
