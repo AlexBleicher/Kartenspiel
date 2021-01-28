@@ -122,19 +122,47 @@ public class Player {
         boolean added=false;
         for(List<Card> row: cardsChosen){
             if(isRow(row)){
-
+                if(fitsRow(addedCard,row)){
+                    row.add(addedCard);
+                    added=true;
+                    break;
+                }
             }
+        }
+        if(!added){
+            List<Card> newList=new ArrayList<>();
+            newList.add(addedCard);
+            cardsChosen.add(newList);
         }
     }
     public boolean isRow(List<Card> rowToCheck){
-        boolean isRow=false;
         if(rowToCheck.size()==1){
-            isRow=true;
+            return true;
         }
-        else if(rowToCheck.get(0).getName()!=rowToCheck.get(1).getName()){
-            isRow=true;
+        for(int i=0;i<rowToCheck.size()-1;i++){
+            Card currentCard=rowToCheck.get(i);
+            Card nextCard=rowToCheck.get(i+1);
+            if(currentCard.getName().ordinal()!=nextCard.getName().ordinal()-1){
+                return false;
+            }
         }
-        return isRow;
+
+        return true;
+    }
+    public boolean fitsRow(Card cardToAdd, List<Card> rowToCheck){
+        boolean fitsRow=true;
+        for(Card card:rowToCheck){
+            if(card.equalsStructural(cardToAdd)){
+                fitsRow=false;
+            }
+        }
+        if(cardToAdd.getColor()!=rowToCheck.get(0).getColor()){
+            fitsRow=false;
+        }
+        else if(cardToAdd.getName().ordinal()!=rowToCheck.get(0).getName().ordinal()-1&&cardToAdd.getName().ordinal()!=rowToCheck.get(rowToCheck.size()-1).getName().ordinal()+1){
+            fitsRow=false;
+        }
+        return fitsRow;
     }
     /*public int organizeHand() {
         int currentPoints = 0;

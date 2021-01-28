@@ -12,58 +12,86 @@ import static org.junit.jupiter.api.Assertions.*;
 class PlayerTest {
 
     @Test
-    public void testIsPair(){
-        Player testPlayer=new Player();
-        Card card1=new Card(CardColor.HEART,1);
-        Card card2=new Card(CardColor.SPADES,1);
-        Card card3=new Card(CardColor.CROSS,1);
-        Card card4=new Card(CardColor.HEART,2);
-        Card card5=new Card(CardColor.HEART,2);
-        Card card6=new Card(CardColor.CHECK,3);
-        Card card7=new Card(CardColor.CHECK,4);
-        Card card8=new Card(CardColor.CHECK,5);
-        List<Card> listCardsPair=new ArrayList<>();
+    public void testIsPair() {
+        Player testPlayer = new Player();
+        Card card1 = new Card(CardColor.HEART, 1);
+        Card card2 = new Card(CardColor.SPADES, 1);
+        Card card3 = new Card(CardColor.CROSS, 1);
+        Card card4 = new Card(CardColor.HEART, 2);
+        Card card5 = new Card(CardColor.HEART, 2);
+        Card card6 = new Card(CardColor.CHECK, 3);
+        Card card7 = new Card(CardColor.CHECK, 4);
+        Card card8 = new Card(CardColor.CHECK, 5);
+        List<Card> listCardsPair = new ArrayList<>();
         listCardsPair.add(card1);
         listCardsPair.add(card2);
         listCardsPair.add(card3);
 
-        List<Card>listCardDuplicate=new ArrayList<>();
+        List<Card> listCardDuplicate = new ArrayList<>();
         listCardDuplicate.add(card4);
         listCardDuplicate.add(card5);
 
-        List<Card>listCardRow=new ArrayList<>();
+        List<Card> listCardRow = new ArrayList<>();
         listCardRow.add(card6);
         listCardRow.add(card7);
         listCardRow.add(card8);
 
-        boolean isPair=testPlayer.isPair(listCardsPair);
-        boolean isNoPair=testPlayer.isPair(listCardRow);
+        boolean isPair = testPlayer.isPair(listCardsPair);
+        boolean isNoPair = testPlayer.isPair(listCardRow);
         //assertThat(isPair).isTrue();
         assertThat(isNoPair).isFalse();
 
     }
+
     @Test
-    void testAddToPair(){
-        Player testPlayer=new Player();
-        Card card1=new Card(CardColor.HEART,1);
-        Card card2=new Card(CardColor.CHECK,2);
-        Card card3=new Card(CardColor.SPADES,2);
-        Card card4=new Card(CardColor.CROSS,2);
-        Card card5=new Card(CardColor.CHECK, 1);
-        Card card6=new Card(CardColor.CROSS,1);
+    void testAddToPair() {
+        Player testPlayer = new Player();
+        Card card1 = new Card(CardColor.HEART, 1);
+        Card card2 = new Card(CardColor.CHECK, 2);
+        Card card3 = new Card(CardColor.SPADES, 2);
+        Card card4 = new Card(CardColor.CROSS, 2);
+        Card card5 = new Card(CardColor.CHECK, 1);
+        Card card6 = new Card(CardColor.CROSS, 1);
         testPlayer.addToPair(card1);
         testPlayer.addToPair(card2);
         testPlayer.addToPair(card3);
         testPlayer.addToPair(card4);
         testPlayer.addToPair(card5);
         testPlayer.addToPair(card6);
-        for(List<Card>pairs:testPlayer.getCardsChosen()) {
+        for (List<Card> pairs : testPlayer.getCardsChosen()) {
             for (Card card : pairs) {
                 System.out.println(card.getfullName());
             }
         }
         assertThat(testPlayer.getCardsChosen().size()).isEqualTo(2);
 
+    }
+    @Test
+    public void isRow(){
+        Player testPlayer=new Player();
+        Card card1=new Card(CardColor.HEART,1);
+        Card card2=new Card(CardColor.HEART,2);
+        Card card3=new Card(CardColor.HEART,3);
+        List<Card> testRow=new ArrayList<>();
+        testRow.add(card1);
+        testRow.add(card2);
+        testRow.add(card3);
+
+        boolean isRow=testPlayer.isRow(testRow);
+        assertThat(isRow).isTrue();
+    }
+    @Test
+    public void testFitsRow() {
+        Player testPlayer = new Player();
+        Card card1 = new Card(CardColor.HEART, 1);
+        Card card2 = new Card(CardColor.HEART, 2);
+        List<Card> compareRow = new ArrayList<>();
+        compareRow.add(card1);
+        compareRow.add(card2);
+
+        Card card3 = new Card(CardColor.HEART, 4);
+        boolean doesFit = testPlayer.fitsRow(card3, compareRow);
+        assertThat(doesFit).isFalse();
     }
    /* @Test
     public void testRowfinder(){
