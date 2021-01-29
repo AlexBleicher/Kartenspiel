@@ -12,13 +12,14 @@ public class Player {
     private int pointsHand;
     private boolean isOut;
     private int pointsTotal;
-    private List<List<Card>> cardsChosen=new ArrayList<>();
+    private List<List<Card>> cardsChosen = new ArrayList<>();
+    public List<List<Card>> cardsOnTable = new ArrayList<>();
 
     public int getPointsHand() {
         return pointsHand;
     }
 
-    public boolean isOut() {
+    public boolean getIsOut() {
         return isOut;
     }
 
@@ -34,9 +35,100 @@ public class Player {
 
     public void showHand() {
         for (Card card : hand) {
-            System.out.println(card.getfullName());
+            System.out.println(card.getfullName() + ": " + hand.indexOf(card));
         }
 
+    }
+
+    public void action() {
+        Scanner scann = new Scanner(System.in);
+        boolean hasDiscarded=false;
+        int index=-1;
+        showHand();
+        while(!hasDiscarded) {
+            System.out.println("Geben Sie hier Ihre gewünschte Aktion (Karte_ablegen, Karte_sortieren, Rausgehen, Anlegen)  ein: ");
+            String userInput = scann.next();
+            System.out.println(userInput);
+            switch (userInput) {
+                case ("Karte_ablegen"):
+                    System.out.println("Welche Karte soll abgelegt werden? Sie haben folgende Karten auf der Hand: ");
+                    showHand();
+                    System.out.println("Wählen Sie eine Karte");
+                    userInput = scann.next();
+                    index = Integer.parseInt(userInput);
+                    if (index >= 0) {
+                        chooseCard("Discard", index);
+                        hasDiscarded=true;
+                    }
+                    break;
+                case("Karte_sortieren"):
+                    System.out.println("Welche Karte möchten sie sortieren? Sie haben folgende Karten auf der Hand: ");
+                    showHand();
+                    System.out.println("Wählen Sie eine Karte");
+                    userInput = scann.next();
+                    index=Integer.parseInt(userInput);
+                    if(index>=0){
+                        System.out.println("Wie möchten sie die Karte sortieren? Zu einem Paar, oder zu einer Reihe?");
+                        userInput=scann.next();
+                        if(userInput.equals("Paar")){
+                            chooseCard("Select Pair", index);
+                        }
+                        else if(userInput.equals("Reihe")){
+                            chooseCard("Select Row", index);
+                        }
+                        else{
+                            System.out.println("Keine gültige Eingabe!");
+                        }
+                    }
+                    break;
+                case("Rausgehen"):
+                    List<List<Card>> cardsChosenToComeOut=new ArrayList<>();
+                    boolean finished=false;
+                    while(!finished){
+                        System.out.println("Wählen sie das Paar oder die Reihe mithilfe des Index. Wenn sie fertig sind geben Sie 'Abbrechen' ein. Sie haben folgende Auswahlmöglichkeiten:" );
+                        for(List<Card> cardList: cardsChosenToComeOut){
+                            System.out.println("Neues Paar oder neue Reihe :");
+                            for(Card card: cardList){
+                                System.out.println(card.getfullName());
+                            }
+                        }
+                        userInput=scann.nextLine();
+                        if(userInput.equals("Abbrechen")){
+                            finished=true;
+                        }
+                        else {
+                            index = Integer.parseInt(userInput);
+                            if (index >= 0 && index < cardsChosen.size()) {
+                                List<Card> chosenList = cardsChosen.get(index);
+                                if (chosenList.size() >= 3) {
+                                    cardsChosenToComeOut.add(chosenList);
+                                }
+                            }
+                        }
+                    }
+                    comeOut(cardsChosenToComeOut);
+                    break;
+                case("Anlegen"):
+                    System.out.println("Welche Karte möchten Sie anlegen? Sie haben folgende Karten auf der Hand: ");
+                    showHand();
+                    System.out.println("Wählen Sie eine Karte: ");
+                    userInput=scann.nextLine();
+                    index=Integer.parseInt(userInput);
+                    addCardToTable(hand.get(index));
+                    break;
+                default:
+                    System.out.println("Eingabe nicht möglich!");
+            }
+        }
+    }
+
+    public void showCardsOnTable() {
+        for (List<Card> list : cardsOnTable) {
+            System.out.println("Neues zusammenhängedes Konstrukt: ");
+            for (Card card : list) {
+                System.out.println(card.getfullName());
+            }
+        }
     }
 
     public void draw(Card newCard) {
@@ -47,7 +139,7 @@ public class Player {
         return pointsTotal;
     }
 
-    public List<List<Card>> getCardsChosen(){
+    public List<List<Card>> getCardsChosen() {
         return cardsChosen;
     }
 
@@ -55,114 +147,157 @@ public class Player {
         hand.remove(chosenCard);
     }
 
-    public void setPointsTotal(int amountOfPoints){
-        pointsTotal+=amountOfPoints;
+    public void setPointsTotal(int amountOfPoints) {
+        pointsTotal += amountOfPoints;
     }
 
-    public void comeOut(List<List<Card>> cardsUsedToComeOut){
-
+    public void comeOut(List<List<Card>> cardsUsedToComeOut) {
+        int points = 0;
+        for (List<Card> chosenList : cardsUsedToComeOut) {
+            points += calculatePoints(chosenList);
+        }
+        if (points >= 40) {
+            for (List<Card> currentList : cardsUsedToComeOut) {
+                for (Card cardToRemove : currentList) {
+                    hand.remove(cardToRemove);
+                }
+                cardsOnTable.add(currentList);
+            }
+            isOut = true;
+        }
     }
 
-    public Card chooseCard(String action, int index){
-        if(action.equals("Discard")){
-            return hand.get(index);
-        }
-        else if(action.equals("Select Pair")){
-            addToPair(hand.get(index));
-
-        }
-        else if(action.equals("Select Row")){
-            addToRow(hand.get(index));
-        }
-        return new Card(CardColor.HEART,0);
-    }
-
-    public void addToPair(Card addedCard){
-        boolean added=false;
-        for(List<Card> searchPair: cardsChosen){
-            if(isPair(searchPair)){
-                if(fitsPair(addedCard,searchPair)) {
-                    searchPair.add(addedCard);
-                    added=true;
+    public void addCardToTable(Card chosenCard) {
+        boolean added = false;
+        for (List<Card> possibleAddList : cardsOnTable) {
+            if (isPair(possibleAddList)) {
+                if (fitsPair(chosenCard, possibleAddList)) {
+                    possibleAddList.add(chosenCard);
+                    hand.remove(chosenCard);
+                    added = true;
+                    break;
+                }
+            } else if (isRow(possibleAddList)) {
+                if (fitsRow(chosenCard, possibleAddList)) {
+                    possibleAddList.add(chosenCard);
+                    hand.remove(chosenCard);
+                    added = true;
                     break;
                 }
             }
         }
         if (!added) {
-            List<Card> newPair=new ArrayList<>();
+            System.out.println("Karte kann nicht an eigene Karten angefügt werden!");
+        }
+    }
+
+    public Card chooseCard(String action, int index) {
+        if (action.equals("Discard")) {
+            discard(hand.get(index));
+        } else if (action.equals("Select Pair")) {
+            addToPair(hand.get(index));
+
+        } else if (action.equals("Select Row")) {
+            addToRow(hand.get(index));
+        }
+        return new Card(CardColor.HEART, 0);
+    }
+
+    public void addToPair(Card addedCard) {
+        boolean added = false;
+        for (List<Card> searchPair : cardsChosen) {
+            if (isPair(searchPair)) {
+                if (fitsPair(addedCard, searchPair)) {
+                    searchPair.add(addedCard);
+                    added = true;
+                    break;
+                }
+            }
+        }
+        if (!added) {
+            List<Card> newPair = new ArrayList<>();
             newPair.add(addedCard);
             cardsChosen.add(newPair);
         }
     }
 
-    public boolean isPair(List<Card> checkedCards){
-        boolean isPair=false;
-        if(checkedCards.size()==1||checkedCards.size()==0){
-            isPair=true;
-        }
-        else if(checkedCards.get(0).getColor()!=checkedCards.get(1).getColor()){
-            isPair=true;
+    public boolean isPair(List<Card> checkedCards) {
+        boolean isPair = false;
+        if (checkedCards.size() == 1 || checkedCards.size() == 0) {
+            isPair = true;
+        } else if (checkedCards.get(0).getColor() != checkedCards.get(1).getColor()) {
+            isPair = true;
         }
         return isPair;
     }
-    public boolean fitsPair(Card cardtoProve, List<Card> pairToCheck){
-        boolean fitsPair=true;
-        if(cardtoProve.getName()!=pairToCheck.get(0).getName()){
-            fitsPair=false;
+
+    public boolean fitsPair(Card cardtoProve, List<Card> pairToCheck) {
+        boolean fitsPair = true;
+        if (cardtoProve.getName() != pairToCheck.get(0).getName()) {
+            fitsPair = false;
         }
-        for(Card card: pairToCheck){
+        for (Card card : pairToCheck) {
             if (card.equalsStructural(cardtoProve)) {
-                fitsPair=false;
+                fitsPair = false;
             }
         }
         return fitsPair;
     }
 
-    public void addToRow(Card addedCard){
-        boolean added=false;
-        for(List<Card> row: cardsChosen){
-            if(isRow(row)){
-                if(fitsRow(addedCard,row)){
+    public void addToRow(Card addedCard) {
+        boolean added = false;
+        for (List<Card> row : cardsChosen) {
+            if (isRow(row)) {
+                if (fitsRow(addedCard, row)) {
                     row.add(addedCard);
-                    added=true;
+                    added = true;
                     break;
                 }
             }
         }
-        if(!added){
-            List<Card> newList=new ArrayList<>();
+        if (!added) {
+            List<Card> newList = new ArrayList<>();
             newList.add(addedCard);
             cardsChosen.add(newList);
         }
     }
-    public boolean isRow(List<Card> rowToCheck){
-        if(rowToCheck.size()==1){
+
+    public boolean isRow(List<Card> rowToCheck) {
+        if (rowToCheck.size() == 1) {
             return true;
         }
-        for(int i=0;i<rowToCheck.size()-1;i++){
-            Card currentCard=rowToCheck.get(i);
-            Card nextCard=rowToCheck.get(i+1);
-            if(currentCard.getName().ordinal()!=nextCard.getName().ordinal()-1){
+        for (int i = 0; i < rowToCheck.size() - 1; i++) {
+            Card currentCard = rowToCheck.get(i);
+            Card nextCard = rowToCheck.get(i + 1);
+            if (currentCard.getName().ordinal() != nextCard.getName().ordinal() - 1) {
                 return false;
             }
         }
 
         return true;
     }
-    public boolean fitsRow(Card cardToAdd, List<Card> rowToCheck){
-        boolean fitsRow=true;
-        for(Card card:rowToCheck){
-            if(card.equalsStructural(cardToAdd)){
-                fitsRow=false;
+
+    public boolean fitsRow(Card cardToAdd, List<Card> rowToCheck) {
+        boolean fitsRow = true;
+        for (Card card : rowToCheck) {
+            if (card.equalsStructural(cardToAdd)) {
+                fitsRow = false;
             }
         }
-        if(cardToAdd.getColor()!=rowToCheck.get(0).getColor()){
-            fitsRow=false;
-        }
-        else if(cardToAdd.getName().ordinal()!=rowToCheck.get(0).getName().ordinal()-1&&cardToAdd.getName().ordinal()!=rowToCheck.get(rowToCheck.size()-1).getName().ordinal()+1){
-            fitsRow=false;
+        if (cardToAdd.getColor() != rowToCheck.get(0).getColor()) {
+            fitsRow = false;
+        } else if (cardToAdd.getName().ordinal() != rowToCheck.get(0).getName().ordinal() - 1 && cardToAdd.getName().ordinal() != rowToCheck.get(rowToCheck.size() - 1).getName().ordinal() + 1) {
+            fitsRow = false;
         }
         return fitsRow;
+    }
+
+    public Integer calculatePoints(List<Card> cards) {
+        Integer totalPoints = 0;
+        for (Card card : cards) {
+            totalPoints += card.getPoints();
+        }
+        return totalPoints;
     }
     /*public int organizeHand() {
         int currentPoints = 0;
@@ -248,13 +383,7 @@ public class Player {
         return allDuplicates;
     }
 
-    public Integer calculatePoints(List<Card> cards) {
-        Integer totalPoints = 0;
-        for (Card card : cards) {
-            totalPoints += card.getPoints();
-        }
-        return totalPoints;
-    }
+
 
     public List<List<Card>> getAllPairs(List<Card> allDuplicates) {
         List<List<Card>> allPossiblePairs = new ArrayList<>();

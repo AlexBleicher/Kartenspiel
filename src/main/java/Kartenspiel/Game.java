@@ -37,7 +37,7 @@ public class Game {
                 gameOver = true;
             } else {
                 drawACard(currentPlayer);
-                discardACard(currentPlayer);
+                currentPlayer.action();
                 currentPlayer=playerList.get(playerList.indexOf(currentPlayer)+1);
             }
         }
@@ -98,7 +98,6 @@ public class Game {
 
     public void discardACard(Player player) {
         Card chosenCard = player.chooseCard("Discard",0);
-        player.discard(chosenCard);
         discardPile.add(chosenCard);
     }
 }

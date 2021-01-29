@@ -93,6 +93,90 @@ class PlayerTest {
         boolean doesFit = testPlayer.fitsRow(card3, compareRow);
         assertThat(doesFit).isFalse();
     }
+
+    @Test
+    public void testChooseCard(){
+        Player testPlayer=new Player();
+
+        Card heartTwo=new Card(CardColor.HEART, 1);
+        Card heartThree=new Card(CardColor.HEART,2);
+        Card crossTwo=new Card(CardColor.CROSS,1);
+        Card disposableCard=new Card(CardColor.SPADES, 10);
+
+        List<Card> drawList=new ArrayList<>();
+        drawList.add(heartTwo);
+        drawList.add(heartThree);
+        drawList.add(crossTwo);
+        drawList.add(disposableCard);
+
+        for(Card card:drawList){
+            testPlayer.draw(card);
+        }
+
+        testPlayer.chooseCard("Select Row", 0);
+        testPlayer.chooseCard("Select Row", 1);
+        testPlayer.chooseCard("Discard",3);
+
+        assertThat(testPlayer.getHand().size()).isEqualTo(3);
+    }
+
+    @Test
+    public void testComeOut(){
+        Player testPlayer=new Player();
+        List<List<Card>> testList=new ArrayList<>();
+        List<Card> testPair=new ArrayList<>();
+        List<Card> testRow=new ArrayList<>();
+        Card card1=new Card(CardColor.HEART, 10);
+        Card card2=new Card(CardColor.CHECK, 10);
+        Card card3=new Card(CardColor.SPADES, 10);
+        Card card4=new Card(CardColor.CROSS, 10);
+        Card card5=new Card(CardColor.HEART,1);
+        Card card6=new Card(CardColor.HEART,2);
+        Card card7=new Card(CardColor.HEART,3);
+        testPair.add(card1);
+        testPair.add(card2);
+        testPair.add(card3);
+        testPair.add(card4);
+        testList.add(testPair);
+        testRow.add(card5);
+        testRow.add(card6);
+        testRow.add(card7);
+        testList.add(testRow);
+        testPlayer.comeOut(testList);
+        boolean isOut=testPlayer.getIsOut();
+        testPlayer.showCardsOnTable();
+        assertThat(isOut).isTrue();
+    }
+    @Test
+    public void testAddToTable(){
+        Player testPlayer=new Player();
+        List<List<Card>> testList=new ArrayList<>();
+        List<Card> testPair=new ArrayList<>();
+        List<Card> testRow=new ArrayList<>();
+        Card card1=new Card(CardColor.HEART, 10);
+        Card card2=new Card(CardColor.CHECK, 10);
+        Card card3=new Card(CardColor.SPADES, 10);
+        Card card4=new Card(CardColor.CROSS, 10);
+        Card card5=new Card(CardColor.HEART,1);
+        Card card6=new Card(CardColor.HEART,2);
+        Card card7=new Card(CardColor.HEART,3);
+        testPair.add(card1);
+        testPair.add(card2);
+        testPair.add(card3);
+        testPair.add(card4);
+        testList.add(testPair);
+        testRow.add(card5);
+        testRow.add(card6);
+        testRow.add(card7);
+        testList.add(testRow);
+        testPlayer.comeOut(testList);
+        testPlayer.showCardsOnTable();
+        testPlayer.addCardToTable(new Card(CardColor.HEART, 4));
+        System.out.println("Karte hinzugefügt");
+        testPlayer.showCardsOnTable();
+        assertThat(testPlayer.cardsOnTable.get(1).size()).isEqualTo(4);
+    }
+
    /* @Test
     public void testRowfinder(){
 
