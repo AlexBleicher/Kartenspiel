@@ -30,14 +30,14 @@ public class Game {
         turn_first_Card();
     }
 
-    public void playGame(Player starter) {
+    /*public void playGame(Player starter) {
         boolean gameOver = false;
         Player currentPlayer = starter;
         while (!gameOver) {
             if (currentPlayer.getHand().size() == 0) {
                 gameOver = true;
             } else {
-                drawACard(currentPlayer);
+                drawACard();
                 currentPlayer.action();
                 currentPlayer=playerList.get(playerList.indexOf(currentPlayer)+1);
             }
@@ -53,7 +53,7 @@ public class Game {
             startGame();
             playGame(playerList.get(i));
         }
-    }
+    }*/
 
     public void generatePlayers() { //Nur vorübergehend, um Start der Runde zu simulieren
         Player player1 = new Player();
@@ -97,8 +97,12 @@ public class Game {
         playerOnTurn.draw(currentCard);
     }
 
-    public void discardACard(Player player) {
-        Card chosenCard = player.chooseCard("Discard",0);
+    public void discardACard() {
+        Card chosenCard = playerOnTurn.chooseCard("Discard",0);
         discardPile.add(chosenCard);
+    }
+
+    public void showHand(){
+        playerOnTurn.showHand();
     }
 }

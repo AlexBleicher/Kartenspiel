@@ -17,4 +17,9 @@ public class KartenspielGUIController {
     public void showHand(ActionEvent e){
         game.showHand();
     }
+
+    public void discardCard(ActionEvent e){
+        game.discardACard();
+        taOutput.setText("Karte abgelegt!");
+    }
 }

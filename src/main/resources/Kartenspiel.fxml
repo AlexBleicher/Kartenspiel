@@ -31,6 +31,11 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </Button>
+            <Button fx:id="bDiscard" mnemonicParsing="false" onAction="#discardCard" text="Karte ablegen">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </Button>
          </children></HBox>
       <TextArea fx:id="taOutput" prefHeight="200.0" prefWidth="200.0" />
    </children>
