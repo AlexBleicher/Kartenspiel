@@ -1,13 +1,14 @@
 package Kartenspiel;
 
+import Kartenspiel.Logik.Card;
+import Kartenspiel.Logik.CardColor;
+import Kartenspiel.Logik.Player;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.shouldHaveThrown;
-import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
 

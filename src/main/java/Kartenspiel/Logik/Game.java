@@ -1,4 +1,4 @@
-package Kartenspiel;
+package Kartenspiel.Logik;
 
 import java.util.*;
 
@@ -7,6 +7,7 @@ public class Game {
     public List<Player> playerList = new ArrayList<>();
     private LinkedList<Card> set = new LinkedList<>();
     private LinkedList<Card> discardPile = new LinkedList<>();
+    private Player playerOnTurn;
 
     public List<Player> getPlayerList() {
         return playerList;
@@ -90,10 +91,10 @@ public class Game {
         discardPile.add(firstCard);
     }
 
-    public void drawACard(Player player) {
+    public void drawACard() {
         Card currentCard = set.getFirst();
         set.removeFirst();
-        player.draw(currentCard);
+        playerOnTurn.draw(currentCard);
     }
 
     public void discardACard(Player player) {

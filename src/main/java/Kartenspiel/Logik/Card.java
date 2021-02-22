@@ -1,6 +1,4 @@
-package Kartenspiel;
-
-import java.util.Objects;
+package Kartenspiel.Logik;
 
 public class Card {
 
