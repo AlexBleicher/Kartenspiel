@@ -1,4 +1,4 @@
-package Kartenspiel.Logik;
+package de.alexbleicher.kartenspiel.logik;
 
 import java.util.*;
 

@@ -1,8 +1,8 @@
-package Kartenspiel;
+package de.alexbleicher.kartenspiel;
 
-import Kartenspiel.Logik.Card;
-import Kartenspiel.Logik.CardColor;
-import Kartenspiel.Logik.Player;
+import de.alexbleicher.kartenspiel.logik.Card;
+import de.alexbleicher.kartenspiel.logik.CardColor;
+import de.alexbleicher.kartenspiel.logik.Player;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

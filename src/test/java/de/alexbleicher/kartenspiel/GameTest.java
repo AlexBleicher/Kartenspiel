@@ -1,6 +1,6 @@
-package Kartenspiel;
+package de.alexbleicher.kartenspiel;
 
-import Kartenspiel.Logik.Game;
+import de.alexbleicher.kartenspiel.logik.Game;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
