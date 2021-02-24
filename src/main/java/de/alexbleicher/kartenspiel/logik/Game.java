@@ -26,7 +26,11 @@ public class Game {
         generateCards();
         Collections.shuffle(set);
         hand_out();
+        generatePlayers();
+        System.out.println(playerList.size());
+        playerOnTurn = playerList.get((int) (Math.random()*playerList.size()));
         //playerList.get(0).showHand();
+        System.out.println(playerList.indexOf(playerOnTurn));
         turn_first_Card();
     }
 
@@ -56,10 +60,10 @@ public class Game {
     }*/
 
     public void generatePlayers() { //Nur vorübergehend, um Start der Runde zu simulieren
-        Player player1 = new Player();
-        Player player2 = new Player();
-        Player player3 = new Player();
-        Player player4 = new Player();
+        Player player1 = new Player("Hans");
+        Player player2 = new Player("Dieter");
+        Player player3 = new Player("Klaus");
+        Player player4 = new Player("Fritz");
 
         playerList.add(player1);
         playerList.add(player2);
@@ -104,5 +108,9 @@ public class Game {
 
     public void showHand(){
         playerOnTurn.showHand();
+    }
+
+    public Card getLastDiscardedCard(){
+        return discardPile.get(discardPile.size()-1);
     }
 }

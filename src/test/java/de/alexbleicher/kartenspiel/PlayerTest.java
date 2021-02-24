@@ -14,7 +14,7 @@ class PlayerTest {
 
     @Test
     public void testIsPair() {
-        Player testPlayer = new Player();
+        Player testPlayer = new Player("Hans");
         Card card1 = new Card(CardColor.HEART, 1);
         Card card2 = new Card(CardColor.SPADES, 1);
         Card card3 = new Card(CardColor.CROSS, 1);
@@ -46,7 +46,7 @@ class PlayerTest {
 
     @Test
     void testAddToPair() {
-        Player testPlayer = new Player();
+        Player testPlayer = new Player("Hans");
         Card card1 = new Card(CardColor.HEART, 1);
         Card card2 = new Card(CardColor.CHECK, 2);
         Card card3 = new Card(CardColor.SPADES, 2);
@@ -69,7 +69,7 @@ class PlayerTest {
     }
     @Test
     public void isRow(){
-        Player testPlayer=new Player();
+        Player testPlayer=new Player("Hans");
         Card card1=new Card(CardColor.HEART,1);
         Card card2=new Card(CardColor.HEART,2);
         Card card3=new Card(CardColor.HEART,3);
@@ -83,7 +83,7 @@ class PlayerTest {
     }
     @Test
     public void testFitsRow() {
-        Player testPlayer = new Player();
+        Player testPlayer = new Player("Hans");
         Card card1 = new Card(CardColor.HEART, 1);
         Card card2 = new Card(CardColor.HEART, 2);
         List<Card> compareRow = new ArrayList<>();
@@ -97,7 +97,7 @@ class PlayerTest {
 
     @Test
     public void testChooseCard(){
-        Player testPlayer=new Player();
+        Player testPlayer=new Player("Hans");
 
         Card heartTwo=new Card(CardColor.HEART, 1);
         Card heartThree=new Card(CardColor.HEART,2);
@@ -123,7 +123,7 @@ class PlayerTest {
 
     @Test
     public void testComeOut(){
-        Player testPlayer=new Player();
+        Player testPlayer=new Player("Hans");
         List<List<Card>> testList=new ArrayList<>();
         List<Card> testPair=new ArrayList<>();
         List<Card> testRow=new ArrayList<>();
@@ -150,7 +150,7 @@ class PlayerTest {
     }
     @Test
     public void testAddToTable(){
-        Player testPlayer=new Player();
+        Player testPlayer=new Player("Hans");
         List<List<Card>> testList=new ArrayList<>();
         List<Card> testPair=new ArrayList<>();
         List<Card> testRow=new ArrayList<>();

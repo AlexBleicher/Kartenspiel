@@ -4,7 +4,7 @@ import java.util.*;
 
 
 public class Player {
-
+    private String name;
     private List<Card> hand = new ArrayList<>();
     private int pointsHand;
     private boolean isOut;
@@ -20,10 +20,11 @@ public class Player {
         return isOut;
     }
 
-    public Player() {
+    public Player(String name) {
         pointsTotal = 0;
         pointsHand = 0;
         isOut = false;
+        this.name=name;
     }
 
     public List<Card> getHand() {
@@ -437,4 +438,8 @@ public class Player {
         }
         return allPossibleRows;
     }*/
+
+    public String getName(){
+        return this.name;
+    }
 }
