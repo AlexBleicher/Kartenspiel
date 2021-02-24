@@ -31,14 +31,12 @@ public class Player {
         return hand;
     }
 
-    public void showHand() {
-        for (Card card : hand) {
-            System.out.println(card.getfullName() + ": " + hand.indexOf(card));
-        }
+    public List<Card> showHand() {
+        return hand;
 
     }
 
-    public void action() {
+    /*public void action() {
         Scanner scann = new Scanner(System.in);
         boolean hasDiscarded = false;
         int index = -1;
@@ -115,7 +113,7 @@ public class Player {
                     System.out.println("Eingabe nicht möglich!");
             }
         }
-    }
+    }*/
 
     public void showCardsOnTable() {
         for (List<Card> list : cardsOnTable) {
@@ -134,9 +132,7 @@ public class Player {
         return pointsTotal;
     }
 
-    public List<List<Card>> getCardsChosen() {
-        return cardsChosen;
-    }
+
 
     public void discard(Card chosenCard) {
         hand.remove(chosenCard);

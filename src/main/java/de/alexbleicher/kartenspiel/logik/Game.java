@@ -25,12 +25,10 @@ public class Game {
         generateCards();
         generateCards();
         Collections.shuffle(set);
-        hand_out();
         generatePlayers();
-        System.out.println(playerList.size());
+        hand_out();
         playerOnTurn = playerList.get((int) (Math.random() * playerList.size()));
         //playerList.get(0).showHand();
-        System.out.println(playerList.indexOf(playerOnTurn));
         turn_first_Card();
     }
 
@@ -101,13 +99,13 @@ public class Game {
         playerOnTurn.draw(currentCard);
     }
 
-    public void discardACard() {
-        Card chosenCard = playerOnTurn.chooseCard("Discard", 0);
+    public void discardACard(Card chosenCard) {
+        playerOnTurn.discard(chosenCard);
         discardPile.add(chosenCard);
     }
 
-    public void showHand() {
-        playerOnTurn.showHand();
+    public List<Card> showHand() {
+        return playerOnTurn.showHand();
     }
 
     public Card getLastDiscardedCard() {
@@ -116,6 +114,18 @@ public class Game {
 
     public Player getPlayerOnTurn() {
         return playerOnTurn;
+    }
+
+    public void endTurn() {
+        if (isLastInRound(playerOnTurn)) {
+            playerOnTurn = playerList.get(0);
+        } else {
+            playerOnTurn = playerList.get(playerList.indexOf(playerOnTurn) + 1);
+        }
+    }
+
+    public boolean isLastInRound(Player player) {
+        return (playerList.indexOf(player) == (playerList.size() - 1));
     }
 }
 

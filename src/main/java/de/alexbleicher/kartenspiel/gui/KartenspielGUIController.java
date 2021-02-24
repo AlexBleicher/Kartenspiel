@@ -5,11 +5,13 @@ import de.alexbleicher.kartenspiel.logik.Game;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static javafx.scene.paint.Color.BLACK;
 import static javafx.scene.paint.Color.GREEN;
 
 public class KartenspielGUIController {
@@ -25,9 +27,12 @@ public class KartenspielGUIController {
     private TextField tfPlayer4;
     @FXML
     private TextField tfDiscardPile;
+    @FXML
+    private TextField tfChooseCard;
 
     @FXML
-    private Label lOutput;
+    private TextArea taOutput;
+
     @FXML
     private Label lPlayer1;
     @FXML
@@ -39,6 +44,9 @@ public class KartenspielGUIController {
 
     private List<Label> playerLabels = new ArrayList<>();
 
+    private boolean cardDrawn;
+    private boolean cardDiscarded;
+
     @FXML
     public void initialize() {
         String text = "Noch nicht draußen!";
@@ -49,19 +57,37 @@ public class KartenspielGUIController {
     }
 
     public void drawCard(ActionEvent e) {
-        lOutput.setText("Karte gezogen!");
+        taOutput.setText("Karte gezogen!");
+        game.drawACard();
+        cardDrawn = true;
     }
 
     public void showHand(ActionEvent e) {
-        lOutput.setText("Karten auf der Hand: ");
+        taOutput.setText("Karten auf der Hand: ");
+        List<Card> hand = game.showHand();
+        System.out.println(hand.size());
+        int i=0;
+        for (Card card : hand) {
+            taOutput.setText(taOutput.getText() + card.getfullName() + " " + i + " ; \n");
+            i++;
+        }
     }
 
     public void discardCard(ActionEvent e) {
-        lOutput.setText("Karte abgelegt!");
+        Card chosenCard = chooseCard();
+        if(chosenCard!=null){
+            game.discardACard(chosenCard);
+            taOutput.setText("Karte abgelegt!");
+            cardDiscarded=true;
+            showLastDiscardedCard();
+        }
+        else {
+            taOutput.setText("Fehler! Karte nicht gefunden!");
+        }
     }
 
     public void startGame(ActionEvent e) {
-        lOutput.setText("Das Spiel beginnt");
+        taOutput.setText("Das Spiel beginnt");
         game.startGame();
         playerLabels.add(lPlayer1);
         playerLabels.add(lPlayer2);
@@ -74,18 +100,36 @@ public class KartenspielGUIController {
         highlightPlayerOnTurn();
     }
 
+    public void endTurn() {
+        if (cardDrawn && cardDiscarded) {
+            game.endTurn();
+            taOutput.setText("Karte ziehen");
+            highlightPlayerOnTurn();
+            cardDrawn = false;
+            cardDiscarded = false;
+        } else {
+            taOutput.setText("Noch nicht alle nötigen Aktionen ausgeführt!");
+        }
+    }
+
     public void showLastDiscardedCard() {
         Card lastDiscardedCard = game.getLastDiscardedCard();
-        tfDiscardPile.setText("Letzte abgelegte Karte: " + lastDiscardedCard.getfullName());
+        tfDiscardPile.setText(lastDiscardedCard.getfullName());
     }
 
     public void highlightPlayerOnTurn() {
         for (Label label : playerLabels) {
             if (label.getText().equals(game.getPlayerOnTurn().getName())) {
                 label.setTextFill(GREEN);
-                break;
+            } else {
+                label.setTextFill(BLACK);
             }
         }
 
+    }
+    public Card chooseCard(){
+        int index = Integer.parseInt(tfChooseCard.getText());
+        List<Card> hand = game.showHand();
+        return hand.get(index);
     }
 }

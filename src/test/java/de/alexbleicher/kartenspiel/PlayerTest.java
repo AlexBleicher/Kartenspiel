@@ -44,7 +44,7 @@ class PlayerTest {
 
     }
 
-    @Test
+   /* @Test
     void testAddToPair() {
         Player testPlayer = new Player("Hans");
         Card card1 = new Card(CardColor.HEART, 1);
