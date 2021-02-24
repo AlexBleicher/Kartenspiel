@@ -24,7 +24,7 @@ public class Player {
         pointsTotal = 0;
         pointsHand = 0;
         isOut = false;
-        this.name=name;
+        this.name = name;
     }
 
     public List<Card> getHand() {
@@ -40,10 +40,10 @@ public class Player {
 
     public void action() {
         Scanner scann = new Scanner(System.in);
-        boolean hasDiscarded=false;
-        int index=-1;
+        boolean hasDiscarded = false;
+        int index = -1;
         showHand();
-        while(!hasDiscarded) {
+        while (!hasDiscarded) {
             System.out.println("Geben Sie hier Ihre gewünschte Aktion (Karte_ablegen, Karte_sortieren, Rausgehen, Anlegen)  ein: ");
             String userInput = scann.next();
             System.out.println(userInput);
@@ -56,45 +56,42 @@ public class Player {
                     index = Integer.parseInt(userInput);
                     if (index >= 0) {
                         chooseCard("Discard", index);
-                        hasDiscarded=true;
+                        hasDiscarded = true;
                     }
                     break;
-                case("Karte_sortieren"):
+                case ("Karte_sortieren"):
                     System.out.println("Welche Karte möchten sie sortieren? Sie haben folgende Karten auf der Hand: ");
                     showHand();
                     System.out.println("Wählen Sie eine Karte");
                     userInput = scann.next();
-                    index=Integer.parseInt(userInput);
-                    if(index>=0){
+                    index = Integer.parseInt(userInput);
+                    if (index >= 0) {
                         System.out.println("Wie möchten sie die Karte sortieren? Zu einem Paar, oder zu einer Reihe?");
-                        userInput=scann.next();
-                        if(userInput.equals("Paar")){
+                        userInput = scann.next();
+                        if (userInput.equals("Paar")) {
                             chooseCard("Select Pair", index);
-                        }
-                        else if(userInput.equals("Reihe")){
+                        } else if (userInput.equals("Reihe")) {
                             chooseCard("Select Row", index);
-                        }
-                        else{
+                        } else {
                             System.out.println("Keine gültige Eingabe!");
                         }
                     }
                     break;
-                case("Rausgehen"):
-                    List<List<Card>> cardsChosenToComeOut=new ArrayList<>();
-                    boolean finished=false;
-                    while(!finished){
-                        System.out.println("Wählen sie das Paar oder die Reihe mithilfe des Index. Wenn sie fertig sind geben Sie 'Abbrechen' ein. Sie haben folgende Auswahlmöglichkeiten:" );
-                        for(List<Card> cardList: cardsChosenToComeOut){
+                case ("Rausgehen"):
+                    List<List<Card>> cardsChosenToComeOut = new ArrayList<>();
+                    boolean finished = false;
+                    while (!finished) {
+                        System.out.println("Wählen sie das Paar oder die Reihe mithilfe des Index. Wenn sie fertig sind geben Sie 'Abbrechen' ein. Sie haben folgende Auswahlmöglichkeiten:");
+                        for (List<Card> cardList : cardsChosenToComeOut) {
                             System.out.println("Neues Paar oder neue Reihe :");
-                            for(Card card: cardList){
+                            for (Card card : cardList) {
                                 System.out.println(card.getfullName());
                             }
                         }
-                        userInput=scann.nextLine();
-                        if(userInput.equals("Abbrechen")){
-                            finished=true;
-                        }
-                        else {
+                        userInput = scann.nextLine();
+                        if (userInput.equals("Abbrechen")) {
+                            finished = true;
+                        } else {
                             index = Integer.parseInt(userInput);
                             if (index >= 0 && index < cardsChosen.size()) {
                                 List<Card> chosenList = cardsChosen.get(index);
@@ -106,12 +103,12 @@ public class Player {
                     }
                     comeOut(cardsChosenToComeOut);
                     break;
-                case("Anlegen"):
+                case ("Anlegen"):
                     System.out.println("Welche Karte möchten Sie anlegen? Sie haben folgende Karten auf der Hand: ");
                     showHand();
                     System.out.println("Wählen Sie eine Karte: ");
-                    userInput=scann.nextLine();
-                    index=Integer.parseInt(userInput);
+                    userInput = scann.nextLine();
+                    index = Integer.parseInt(userInput);
                     addCardToTable(hand.get(index));
                     break;
                 default:
@@ -439,7 +436,7 @@ public class Player {
         return allPossibleRows;
     }*/
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 }

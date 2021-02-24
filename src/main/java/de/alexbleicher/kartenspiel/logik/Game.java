@@ -28,7 +28,7 @@ public class Game {
         hand_out();
         generatePlayers();
         System.out.println(playerList.size());
-        playerOnTurn = playerList.get((int) (Math.random()*playerList.size()));
+        playerOnTurn = playerList.get((int) (Math.random() * playerList.size()));
         //playerList.get(0).showHand();
         System.out.println(playerList.indexOf(playerOnTurn));
         turn_first_Card();
@@ -102,15 +102,20 @@ public class Game {
     }
 
     public void discardACard() {
-        Card chosenCard = playerOnTurn.chooseCard("Discard",0);
+        Card chosenCard = playerOnTurn.chooseCard("Discard", 0);
         discardPile.add(chosenCard);
     }
 
-    public void showHand(){
+    public void showHand() {
         playerOnTurn.showHand();
     }
 
-    public Card getLastDiscardedCard(){
-        return discardPile.get(discardPile.size()-1);
+    public Card getLastDiscardedCard() {
+        return discardPile.get(discardPile.size() - 1);
+    }
+
+    public Player getPlayerOnTurn() {
+        return playerOnTurn;
     }
 }
+
