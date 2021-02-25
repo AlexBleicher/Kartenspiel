@@ -66,7 +66,7 @@ public class KartenspielGUIController {
         taOutput.setText("Karten auf der Hand: ");
         List<Card> hand = game.showHand();
         System.out.println(hand.size());
-        int i=0;
+        int i = 0;
         for (Card card : hand) {
             taOutput.setText(taOutput.getText() + card.getfullName() + " " + i + " ; \n");
             i++;
@@ -75,13 +75,12 @@ public class KartenspielGUIController {
 
     public void discardCard(ActionEvent e) {
         Card chosenCard = chooseCard();
-        if(chosenCard!=null){
+        if (chosenCard != null) {
             game.discardACard(chosenCard);
             taOutput.setText("Karte abgelegt!");
-            cardDiscarded=true;
+            cardDiscarded = true;
             showLastDiscardedCard();
-        }
-        else {
+        } else {
             taOutput.setText("Fehler! Karte nicht gefunden!");
         }
     }
@@ -94,7 +93,7 @@ public class KartenspielGUIController {
         playerLabels.add(lPlayer3);
         playerLabels.add(lPlayer4);
         for (int i = 0; i < 4; i++) {
-            playerLabels.get(i).setText(game.playerList.get(i).getName());
+            playerLabels.get(i).setText(game.playerList.get(i).getName() + " Punkte: " + game.playerList.get(i).getPointsTotal());
         }
         showLastDiscardedCard();
         highlightPlayerOnTurn();
@@ -127,9 +126,11 @@ public class KartenspielGUIController {
         }
 
     }
-    public Card chooseCard(){
+
+    public Card chooseCard() {
         int index = Integer.parseInt(tfChooseCard.getText());
         List<Card> hand = game.showHand();
+        tfChooseCard.setText("");
         return hand.get(index);
     }
 }

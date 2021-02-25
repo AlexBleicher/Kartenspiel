@@ -1,6 +1,7 @@
 package de.alexbleicher.kartenspiel.logik;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Player {
@@ -8,7 +9,7 @@ public class Player {
     private List<Card> hand = new ArrayList<>();
     private int pointsHand;
     private boolean isOut;
-    private int pointsTotal;
+    private int pointsTotal = 0;
     private List<List<Card>> cardsChosen = new ArrayList<>();
     public List<List<Card>> cardsOnTable = new ArrayList<>();
 
@@ -131,7 +132,6 @@ public class Player {
     public int getPointsTotal() {
         return pointsTotal;
     }
-
 
 
     public void discard(Card chosenCard) {
