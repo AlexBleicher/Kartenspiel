@@ -2,6 +2,8 @@ package de.alexbleicher.kartenspiel.logik;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class Player {
@@ -360,19 +362,7 @@ public class Player {
         return cardCombiPossible;
     }
 
-    public List<Card> getAllDuplicates() {
-        List<Card> allDuplicates = new ArrayList<>();
-        for (int i = 0; i < hand.size(); i++) {
-            Card currentCard = hand.get(i);
-            for (int j = i + 1; j < hand.size(); j++) {
-                Card comparedCard = hand.get(j);
-                if (currentCard.equalsStructural(comparedCard)) {
-                    allDuplicates.add(currentCard);
-                }
-            }
-        }
-        return allDuplicates;
-    }
+
 
 
 
@@ -434,5 +424,41 @@ public class Player {
 
     public String getName() {
         return this.name;
+    }
+
+    public void sortByPair() {
+        Map<Name, List<Card>> allNamesOfCards = hand.stream()
+                .collect(Collectors.groupingBy(card -> card.getName()));
+        hand.clear();
+        for (List<Card> list : allNamesOfCards.values()) {
+            for (Card card : list) {
+                hand.add(card);
+            }
+        }
+    }
+
+    public void sortByColor() {
+        Map<CardColor, List<Card>> allNamesOfCards = hand.stream()
+                .collect(Collectors.groupingBy(card -> card.getColor()));
+        hand.clear();
+        for (List<Card> list : allNamesOfCards.values()) {
+            for (Card card : list) {
+                hand.add(card);
+            }
+        }
+    }
+
+    public List<Card> getAllDuplicates() {
+        List<Card> allDuplicates = new ArrayList<>();
+        for (int i = 0; i < hand.size(); i++) {
+            Card currentCard = hand.get(i);
+            for (int j = i + 1; j < hand.size(); j++) {
+                Card comparedCard = hand.get(j);
+                if (currentCard.equalsStructural(comparedCard)) {
+                    allDuplicates.add(currentCard);
+                }
+            }
+        }
+        return allDuplicates;
     }
 }

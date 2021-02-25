@@ -1,6 +1,9 @@
 package de.alexbleicher.kartenspiel.logik;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Game {
 
@@ -126,6 +129,14 @@ public class Game {
 
     public boolean isLastInRound(Player player) {
         return (playerList.indexOf(player) == (playerList.size() - 1));
+    }
+
+    public void sortByPair() {
+        playerOnTurn.sortByPair();
+    }
+
+    public void sortByColor() {
+        playerOnTurn.sortByColor();
     }
 }
 

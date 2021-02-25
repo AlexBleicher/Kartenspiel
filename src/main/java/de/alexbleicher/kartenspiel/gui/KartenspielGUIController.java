@@ -65,7 +65,6 @@ public class KartenspielGUIController {
     public void showHand(ActionEvent e) {
         taOutput.setText("Karten auf der Hand: ");
         List<Card> hand = game.showHand();
-        System.out.println(hand.size());
         int i = 0;
         for (Card card : hand) {
             taOutput.setText(taOutput.getText() + card.getfullName() + " " + i + " ; \n");
@@ -118,7 +117,7 @@ public class KartenspielGUIController {
 
     public void highlightPlayerOnTurn() {
         for (Label label : playerLabels) {
-            if (label.getText().equals(game.getPlayerOnTurn().getName())) {
+            if (label.getText().contains(game.getPlayerOnTurn().getName())) {
                 label.setTextFill(GREEN);
             } else {
                 label.setTextFill(BLACK);
@@ -132,5 +131,15 @@ public class KartenspielGUIController {
         List<Card> hand = game.showHand();
         tfChooseCard.setText("");
         return hand.get(index);
+    }
+
+    public void sortByPair() {
+        game.sortByPair();
+        showHand(new ActionEvent());
+    }
+
+    public void sortByColor() {
+        game.sortByColor();
+        showHand(new ActionEvent());
     }
 }
