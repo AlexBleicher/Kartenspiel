@@ -1,6 +1,7 @@
 package de.alexbleicher.kartenspiel.logik;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -442,6 +443,7 @@ public class Player {
                 .collect(Collectors.groupingBy(card -> card.getColor()));
         hand.clear();
         for (List<Card> list : allNamesOfCards.values()) {
+            list.sort(Comparator.comparing(card1 -> card1.getName()));
             for (Card card : list) {
                 hand.add(card);
             }
