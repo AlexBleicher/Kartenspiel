@@ -138,5 +138,14 @@ public class Game {
     public void sortByColor() {
         playerOnTurn.sortByColor();
     }
+
+    public boolean canComeOut() {
+        if (playerOnTurn.getPointsChosen() >= 40) {
+            playerOnTurn.comeOut();
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 

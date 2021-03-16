@@ -149,6 +149,10 @@ public class KartenspielGUIController {
 
     public void comeOut() {
         int index = game.getPlayerList().indexOf(game.getPlayerOnTurn());
-        playerFields.get(index).setText("draußen");
+        if (game.canComeOut()) {
+            playerFields.get(index).setText("draußen");
+        } else {
+            taOutput.setText("Damit kannst du nicht rausgehen!");
+        }
     }
 }

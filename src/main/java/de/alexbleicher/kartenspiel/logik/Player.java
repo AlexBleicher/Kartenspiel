@@ -145,76 +145,6 @@ public class Player {
         pointsTotal += amountOfPoints;
     }
 
-    public void comeOut(List<List<Card>> cardsUsedToComeOut) {
-        int points = 0;
-        for (List<Card> chosenList : cardsUsedToComeOut) {
-            points += calculatePoints(chosenList);
-        }
-        if (points >= 40) {
-            for (List<Card> currentList : cardsUsedToComeOut) {
-                for (Card cardToRemove : currentList) {
-                    hand.remove(cardToRemove);
-                }
-                cardsOnTable.add(currentList);
-            }
-            isOut = true;
-        }
-    }
-
-    public void addCardToTable(Card chosenCard) {
-        boolean added = false;
-        for (List<Card> possibleAddList : cardsOnTable) {
-            if (isPair(possibleAddList)) {
-                if (fitsPair(chosenCard, possibleAddList)) {
-                    possibleAddList.add(chosenCard);
-                    hand.remove(chosenCard);
-                    added = true;
-                    break;
-                }
-            } else if (isRow(possibleAddList)) {
-                if (fitsRow(chosenCard, possibleAddList)) {
-                    possibleAddList.add(chosenCard);
-                    hand.remove(chosenCard);
-                    added = true;
-                    break;
-                }
-            }
-        }
-        if (!added) {
-            System.out.println("Karte kann nicht an eigene Karten angefügt werden!");
-        }
-    }
-
-    public Card chooseCard(String action, int index) {
-        if (action.equals("Discard")) {
-            discard(hand.get(index));
-        } else if (action.equals("Select Pair")) {
-            addToPair(hand.get(index));
-
-        } else if (action.equals("Select Row")) {
-            addToRow(hand.get(index));
-        }
-        return new Card(CardColor.HEART, 0);
-    }
-
-    public void addToPair(Card addedCard) {
-        boolean added = false;
-        for (List<Card> searchPair : cardsChosen) {
-            if (isPair(searchPair)) {
-                if (fitsPair(addedCard, searchPair)) {
-                    searchPair.add(addedCard);
-                    added = true;
-                    break;
-                }
-            }
-        }
-        if (!added) {
-            List<Card> newPair = new ArrayList<>();
-            newPair.add(addedCard);
-            cardsChosen.add(newPair);
-        }
-    }
-
     public boolean isPair(List<Card> checkedCards) {
         boolean isPair = false;
         if (checkedCards.size() == 1 || checkedCards.size() == 0) {
@@ -223,37 +153,6 @@ public class Player {
             isPair = true;
         }
         return isPair;
-    }
-
-    public boolean fitsPair(Card cardtoProve, List<Card> pairToCheck) {
-        boolean fitsPair = true;
-        if (cardtoProve.getName() != pairToCheck.get(0).getName()) {
-            fitsPair = false;
-        }
-        for (Card card : pairToCheck) {
-            if (card.equalsStructural(cardtoProve)) {
-                fitsPair = false;
-            }
-        }
-        return fitsPair;
-    }
-
-    public void addToRow(Card addedCard) {
-        boolean added = false;
-        for (List<Card> row : cardsChosen) {
-            if (isRow(row)) {
-                if (fitsRow(addedCard, row)) {
-                    row.add(addedCard);
-                    added = true;
-                    break;
-                }
-            }
-        }
-        if (!added) {
-            List<Card> newList = new ArrayList<>();
-            newList.add(addedCard);
-            cardsChosen.add(newList);
-        }
     }
 
     public boolean isRow(List<Card> rowToCheck) {
@@ -271,27 +170,30 @@ public class Player {
         return true;
     }
 
-    public boolean fitsRow(Card cardToAdd, List<Card> rowToCheck) {
-        boolean fitsRow = true;
-        for (Card card : rowToCheck) {
-            if (card.equalsStructural(cardToAdd)) {
-                fitsRow = false;
-            }
-        }
-        if (cardToAdd.getColor() != rowToCheck.get(0).getColor()) {
-            fitsRow = false;
-        } else if (cardToAdd.getName().ordinal() != rowToCheck.get(0).getName().ordinal() - 1 && cardToAdd.getName().ordinal() != rowToCheck.get(rowToCheck.size() - 1).getName().ordinal() + 1) {
-            fitsRow = false;
-        }
-        return fitsRow;
-    }
-
     public Integer calculatePoints(List<Card> cards) {
         Integer totalPoints = 0;
         for (Card card : cards) {
             totalPoints += card.getPoints();
         }
         return totalPoints;
+    }
+
+    public void comeOut() {
+        isOut = true;
+        for (List<Card> list : cardsChosen) {
+            cardsOnTable.add(list);
+            for (Card card : list) {
+                hand.remove(card);
+            }
+        }
+    }
+
+    public int getPointsChosen() {
+        int points = 0;
+        for (List<Card> list : cardsChosen) {
+            points += calculatePoints(list);
+        }
+        return points;
     }
     /*public int organizeHand() {
         int currentPoints = 0;
