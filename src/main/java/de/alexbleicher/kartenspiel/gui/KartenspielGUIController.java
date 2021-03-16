@@ -30,6 +30,7 @@ public class KartenspielGUIController {
     @FXML
     private TextField tfChooseCard;
 
+    private List<TextField> playerFields = new ArrayList<>();
     @FXML
     private TextArea taOutput;
 
@@ -50,10 +51,13 @@ public class KartenspielGUIController {
     @FXML
     public void initialize() {
         String text = "Noch nicht draußen!";
-        tfPlayer1.setText(text);
-        tfPlayer2.setText(text);
-        tfPlayer3.setText(text);
-        tfPlayer4.setText(text);
+        playerFields.add(tfPlayer1);
+        playerFields.add(tfPlayer2);
+        playerFields.add(tfPlayer3);
+        playerFields.add(tfPlayer4);
+        for (int i = 0; i < 4; i++) {
+            playerFields.get(i).setText(text);
+        }
     }
 
     public void drawCard(ActionEvent e) {
@@ -141,5 +145,10 @@ public class KartenspielGUIController {
     public void sortByColor() {
         game.sortByColor();
         showHand(new ActionEvent());
+    }
+
+    public void comeOut() {
+        int index = game.getPlayerList().indexOf(game.getPlayerOnTurn());
+        playerFields.get(index).setText("draußen");
     }
 }
