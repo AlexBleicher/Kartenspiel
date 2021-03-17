@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +46,12 @@ public class KartenspielGUIController {
 
     private List<Label> playerLabels = new ArrayList<>();
 
+    @FXML
+    private HBox hbOrder;
+
     private boolean cardDrawn;
     private boolean cardDiscarded;
+    private Card cardChosen;
 
     @FXML
     public void initialize() {
@@ -71,15 +76,19 @@ public class KartenspielGUIController {
         List<Card> hand = game.showHand();
         int i = 0;
         for (Card card : hand) {
-            taOutput.setText(taOutput.getText() + card.getfullName() + " " + i + " ; \n");
+            if (card.equals(cardChosen)) {
+                String text = card.getfullName();
+                taOutput.appendText(text + " (Ausgewählte Karte) " + i + " ; \n");
+            } else {
+                taOutput.appendText(card.getfullName() + " " + i + " ; \n");
+            }
             i++;
         }
     }
 
     public void discardCard(ActionEvent e) {
-        Card chosenCard = chooseCard();
-        if (chosenCard != null) {
-            game.discardACard(chosenCard);
+        if (cardChosen != null) {
+            game.discardACard(cardChosen);
             taOutput.setText("Karte abgelegt!");
             cardDiscarded = true;
             showLastDiscardedCard();
@@ -130,11 +139,11 @@ public class KartenspielGUIController {
 
     }
 
-    public Card chooseCard() {
+    public void chooseCard() {
         int index = Integer.parseInt(tfChooseCard.getText());
         List<Card> hand = game.showHand();
         tfChooseCard.setText("");
-        return hand.get(index);
+        cardChosen = hand.get(index);
     }
 
     public void sortByPair() {
@@ -154,5 +163,9 @@ public class KartenspielGUIController {
         } else {
             taOutput.setText("Damit kannst du nicht rausgehen!");
         }
+    }
+
+    public void order() {
+        hbOrder.setVisible(true);
     }
 }

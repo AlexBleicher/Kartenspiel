@@ -25,35 +25,72 @@
                 <Insets left="250.0"/>
             </padding>
         </HBox>
-        <HBox prefHeight="100.0" prefWidth="200.0">
+        <VBox prefHeight="89.0" prefWidth="720.0">
             <children>
-                <Button fx:id="bDraw" mnemonicParsing="false" onAction="#drawCard" text="Karte ziehen">
-                    <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-                    </HBox.margin>
-                </Button>
-                <Button fx:id="bShowHand" mnemonicParsing="false" onAction="#showHand" text="Hand zeigen">
-                    <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-                    </HBox.margin>
-                </Button>
-                <Button fx:id="bDiscard" mnemonicParsing="false" onAction="#discardCard" text="Karte ablegen">
-                    <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-                    </HBox.margin>
-                </Button>
-                <Label text="Karte auswählen:">
-                    <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-                    </HBox.margin>
-                </Label>
-                <TextField fx:id="tfChooseCard">
-                    <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-                    </HBox.margin>
-                </TextField>
+                <HBox prefHeight="100.0" prefWidth="200.0">
+                    <children>
+                        <Button fx:id="bDraw" mnemonicParsing="false" onAction="#drawCard" text="Karte ziehen">
+                            <HBox.margin>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                            </HBox.margin>
+                        </Button>
+                        <Button fx:id="bShowHand" mnemonicParsing="false" onAction="#showHand" text="Hand zeigen">
+                            <HBox.margin>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                            </HBox.margin>
+                        </Button>
+                        <Button fx:id="bDiscard" mnemonicParsing="false" onAction="#discardCard" text="Karte ablegen">
+                            <HBox.margin>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                            </HBox.margin>
+                        </Button>
+                        <Label text="Karte auswählen:">
+                            <HBox.margin>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                            </HBox.margin>
+                        </Label>
+                        <TextField fx:id="tfChooseCard" onAction="#chooseCard">
+                            <HBox.margin>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                            </HBox.margin>
+                        </TextField>
+                    </children>
+                </HBox>
+                <HBox prefHeight="100.0" prefWidth="200.0">
+                    <children>
+                        <Button fx:id="bOrderHand" mnemonicParsing="false" onAction="#order" text="Hand ordnen">
+                            <HBox.margin>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                            </HBox.margin>
+                        </Button>
+                        <HBox fx:id="hbOrder" prefHeight="45.0" prefWidth="548.0" visible="false">
+                            <children>
+                                <Label text="Karte zu Paar/Straße hinzufügen:">
+                                    <HBox.margin>
+                                        <Insets top="10.0"/>
+                                    </HBox.margin>
+                                </Label>
+                                <TextField fx:id="tfChooseID" prefHeight="25.0" prefWidth="109.0">
+                                    <HBox.margin>
+                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                                    </HBox.margin>
+                                </TextField>
+                                <Button fx:id="bNewPair" mnemonicParsing="false" text="Neues Paar">
+                                    <HBox.margin>
+                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                                    </HBox.margin>
+                                </Button>
+                                <Button mnemonicParsing="false" text="Neue Straße">
+                                    <HBox.margin>
+                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                                    </HBox.margin>
+                                </Button>
+                            </children>
+                        </HBox>
+                    </children>
+                </HBox>
             </children>
-        </HBox>
+        </VBox>
         <VBox prefHeight="287.0" prefWidth="600.0">
             <children>
                 <Label fx:id="lPlayer3">
@@ -123,8 +160,8 @@
                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
                             </HBox.margin>
                         </RadioButton>
-                        <Button fx:id="bRauskommen" mnemonicParsing="false" prefHeight="25.0" prefWidth="99.0"
-                                text="Rauskommen" onAction="#comeOut">
+                        <Button fx:id="bRauskommen" mnemonicParsing="false" onAction="#comeOut" prefHeight="25.0"
+                                prefWidth="99.0" text="Rauskommen">
                             <HBox.margin>
                                 <Insets left="50.0"/>
                             </HBox.margin>
